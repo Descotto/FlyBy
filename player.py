@@ -3,7 +3,7 @@ from support import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,group,shoot,s_shot):
+    def __init__(self,pos,group,shoot,s_shot,call_support):
         super().__init__(group)
 
         self.import_character_assets()
@@ -14,11 +14,15 @@ class Player(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(0,-32)
         self.shoot = shoot
         self.s_shoot = s_shot
+        self.call_support = call_support
+        self.support_available = True
+        self.support_active = False
+        self.max_support = False
 
 
         # movement
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 4
+        self.speed = 2
         self.status = 'idle'
 
         # stats
@@ -31,6 +35,8 @@ class Player(pygame.sprite.Sprite):
         self.last_shoot_time = 0
         self.s_cooldown = 0.5
         self.last_s_time = 0
+        self.vulnerable_cooldown = 0.9
+        self.last_vulnerable = 0
 
     def import_character_assets(self):
         character_path = 'Assets/player/'
@@ -50,6 +56,7 @@ class Player(pygame.sprite.Sprite):
             self.frame_index -= 1
             if self.status == 'dead':
                 self.frame_index = 0
+                
 
         image = animation[int(self.frame_index)]
       
@@ -76,10 +83,21 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_SPACE]:
             if self.status != 'dead':
-                self.shoot()
+                self.shoot(self)
         if keys[pygame.K_x]:
             if self.status != 'dead':
                 self.s_shoot()
+                self.support_available = True
+        if keys[pygame.K_s]:
+            if self.status != 'dead' and self.support_available:
+                if not self.max_support:
+                    self.support_available = False
+                    self.call_support()
+                    if self.support_active:
+                        self.max_support = True
+                    else:
+                        self.support_active = True
+                        
 
     def get_status(self):
         if self.hp <= 1:
@@ -91,9 +109,57 @@ class Player(pygame.sprite.Sprite):
             self.status = 'down'
         else:
             self.status = 'idle'
-                
+
+    def take_damage(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_vulnerable > self.vulnerable_cooldown * 1000:
+            self.hp -= 1
+            self.last_vulnerable = current_time
+
     def update(self,player):
         self.hitbox.center = self.rect.center
         self.input()
         self.animate()
         self.get_status()
+
+
+
+
+class Support(Player):
+    def __init__(self,pos,group,shoot,s_shot,call_support):
+        super().__init__(pos,group,shoot,s_shot,call_support)
+        self.hp = 2
+        self.support_available = False
+        self.shoot = shoot
+        self.status = 'idle'
+
+
+    def input(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_SPACE]:
+            self.shoot(self)
+    def animate(self):
+        animation = self.animations[self.status]
+
+        # loop over frame index
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index -= 1
+            if self.status == 'dead':
+                self.frame_index = 0
+                self.kill()
+
+        image = animation[int(self.frame_index)]
+      
+        self.image = image
+        self.rect = self.image.get_rect(topleft = self.rect.topleft)
+        # set the rect
+        
+    def update(self,player):
+        self.input()
+        self.animate()
+        self.get_status()
+        self.direction = player.direction
+        self.rect.x += player.speed * player.direction.x
+        self.rect.y += player.speed * player.direction.y

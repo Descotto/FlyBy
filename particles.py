@@ -53,6 +53,8 @@ class Particles(pygame.sprite.Sprite):
 
         # set the rect
         self.rect = self.image.get_rect(center = self.rect.center)
+
+        
     def keep_rect_pos(self,player):
         if self.particle_type == 'Exhaust1':
             self.rect.x += player.speed * player.direction.x

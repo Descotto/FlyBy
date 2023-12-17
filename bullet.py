@@ -24,7 +24,7 @@ class Bullet(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(1,0)
         # Set the initial position of the bullet based on the player's position
  
-        self.rect = self.image.get_rect(midleft=(player_rect.x +67, player_rect.y + 32))
+        self.rect = self.image.get_rect(midleft=(player_rect.x +70, player_rect.y + 32))
        
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
@@ -113,7 +113,7 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.damage = 2
         self.speed = 5
         self.direction = pygame.math.Vector2(vector)
-        print(self.direction)
+       
         # Set the dimensions and color of the bullet
         self.width = 5
         self.height = 5
@@ -143,5 +143,5 @@ class Enemy_Shot(pygame.sprite.Sprite):
     def update(self,player):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
-        print(self.direction)
+       
         self.animate()

@@ -1,10 +1,12 @@
 import pygame
 import os
 from settings import *
-from player import Player
+from player import *
 from tiles import Tile
 from bullet import *
 from cannon import Cannon
+from ships import *
+from power_ups import Power_Up
 from particles import Particles
 
 class Level:
@@ -13,7 +15,7 @@ class Level:
         self.display_surface = surface
         self.level_setup()
         self.over = False
-        self.play_music('./Assets/midi/here-i-go.mp3')
+        self.play_music('./Assets/midi/EnterSandman.mp3')
         
 
     def level_setup(self):
@@ -21,6 +23,8 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.projectile_spritess = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.entities = pygame.sprite.Group()
+        self.rewards = pygame.sprite.Group()
 
         maps = MAP_LAYOUTS['map_1']
         
@@ -40,11 +44,21 @@ class Level:
                                 (x,y),
                                 [self.visuals,self.player],
                                 self.shoot,
-                                self.secondary_shot)
+                                self.secondary_shot,
+                                self.call_support)
+                            player_one.support = True
                             exhaust = Particles((x,y),[self.visuals],'Exhaust1')
 
                         if style == 'cannons':
-                            cannon = Cannon((x,y), [self.visuals],self.enemy_shoot)
+                            cannon = Cannon((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                        if style == 'enemy1':
+                            ship = Ship1((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                        if style == 'enemy2':
+                            ship = Ship2((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                        if style == 'enemy3':
+                            ship = Ship3((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                        if style == 'enemy4':
+                            ship = Ship4((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
 
     def play_music(self, music_file):
         if os.path.exists(music_file):
@@ -67,25 +81,27 @@ class Level:
                     #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
+            for entity in self.entities.sprites():
+                if entity.rect.colliderect(bullet.rect):
+                    entity.take_damage()
+                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    bullet.kill()
+
     def check_gameover(self):
         player = self.player.sprite
         if player.hp < -10:
             self.over = True
 
     # PLAYER ACTIONS
-    def shoot(self):
-        player = self.player.sprite
+    def shoot(self,player):
+        
         current_time = pygame.time.get_ticks()
         if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(self.player.sprite.rect,[self.visuals,self.projectile_spritess])
+            bullet = Bullet(player.rect,[self.visuals,self.projectile_spritess])
+            
             player.last_shoot_time = current_time
 
-    # ENEMY ACTIONS
-    def enemy_shoot(self,enemy,vector):
-        current_time = pygame.time.get_ticks()
-        if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
-            bullet = Enemy_Shot((enemy.rect.x,enemy.rect.y),[self.visuals],vector)
-            enemy.last_shoot_time = current_time
+    
 
     def secondary_shot(self):
         player = self.player.sprite
@@ -94,6 +110,39 @@ class Level:
             bullet = D_Bullet(self.player.sprite.rect,[self.visuals,self.projectile_spritess])
             player.last_s_time = current_time
 
+    def call_support(self):
+        player = self.player.sprite
+        if player.support_active:
+            support = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
+            exhaust = Particles((support.rect.x,support.rect.y),[self.visuals],'Exhaust1')
+        else:
+            support = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
+            exhaust = Particles((support.rect.x,support.rect.y),[self.visuals],'Exhaust1')
+    # ==============
+    # ENEMY ACTIONS
+    def enemy_shoot(self,enemy,vector):
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
+            bullet = Enemy_Shot((enemy.rect.x,enemy.rect.y),[self.visuals],vector)
+            enemy.last_shoot_time = current_time
+
+    def trigger_death(self,entity):
+        if entity.hp < 1:
+            dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'Explosion3')
+            reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],'power_up')
+            entity.kill()
+
+    # ==============
+    # REWARDS AND MISC 
+    def handle_reward(self):
+        player = self.player.sprite
+
+        for sprite in self.rewards.sprites():
+            if sprite.rect.colliderect(player.hitbox):
+                sprite.action(player)
+
+    # ==============    
+
     def run(self):
         player = self.player.sprite
         self.visuals.custom_draw(player)
@@ -101,6 +150,7 @@ class Level:
         self.collisions(player)
         self.check_gameover()
         self.projectile_collision()
+        self.handle_reward()
         
 
 
