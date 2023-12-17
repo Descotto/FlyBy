@@ -5,6 +5,7 @@ from player import Player
 from tiles import Tile
 from bullet import *
 from cannon import Cannon
+from particles import Particles
 
 class Level:
     def __init__(self,surface):
@@ -18,6 +19,7 @@ class Level:
     def level_setup(self):
         self.visuals = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
+        self.projectile_spritess = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
 
         maps = MAP_LAYOUTS['map_1']
@@ -39,9 +41,10 @@ class Level:
                                 [self.visuals,self.player],
                                 self.shoot,
                                 self.secondary_shot)
+                            exhaust = Particles((x,y),[self.visuals],'Exhaust1')
 
                         if style == 'cannons':
-                            cannon = Cannon((x,y), [self.visuals, self.obstacle_sprites])
+                            cannon = Cannon((x,y), [self.visuals],self.enemy_shoot)
 
     def play_music(self, music_file):
         if os.path.exists(music_file):
@@ -57,6 +60,13 @@ class Level:
             if sprite.rect.colliderect(player.hitbox):
                 player.hp = 0
   
+    def projectile_collision(self):
+        for bullet in self.projectile_spritess.sprites():
+            for obstacle in self.obstacle_sprites.sprites():
+                if obstacle.rect.colliderect(bullet.rect):
+                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    bullet.kill()
+
     def check_gameover(self):
         player = self.player.sprite
         if player.hp < -10:
@@ -67,22 +77,30 @@ class Level:
         player = self.player.sprite
         current_time = pygame.time.get_ticks()
         if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(self.player.sprite.rect,[self.visuals])
+            bullet = Bullet(self.player.sprite.rect,[self.visuals,self.projectile_spritess])
             player.last_shoot_time = current_time
+
+    # ENEMY ACTIONS
+    def enemy_shoot(self,enemy,vector):
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
+            bullet = Enemy_Shot((enemy.rect.x,enemy.rect.y),[self.visuals],vector)
+            enemy.last_shoot_time = current_time
 
     def secondary_shot(self):
         player = self.player.sprite
         current_time = pygame.time.get_ticks()
         if current_time - player.last_s_time > player.s_cooldown * 1000:
-            bullet = D_Bullet(self.player.sprite.rect,[self.visuals])
+            bullet = D_Bullet(self.player.sprite.rect,[self.visuals,self.projectile_spritess])
             player.last_s_time = current_time
 
     def run(self):
         player = self.player.sprite
         self.visuals.custom_draw(player)
-        self.visuals.update()
+        self.visuals.update(player)
         self.collisions(player)
         self.check_gameover()
+        self.projectile_collision()
         
 
 

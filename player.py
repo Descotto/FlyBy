@@ -92,7 +92,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.status = 'idle'
                 
-    def update(self):
+    def update(self,player):
         self.hitbox.center = self.rect.center
         self.input()
         self.animate()

@@ -14,5 +14,5 @@ class Tile(pygame.sprite.Sprite):
         
 
 
-    def update(self):
+    def update(self,player):
         pass
