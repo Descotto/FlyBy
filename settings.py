@@ -16,7 +16,8 @@ MAP_LAYOUTS = {
         'enemy1': import_csv_layout('./Assets/map_files/map_1/map_1_enemy1.csv'),
         'enemy2': import_csv_layout('./Assets/map_files/map_1/map_1_enemy2.csv'),
         'enemy3': import_csv_layout('./Assets/map_files/map_1/map_1_enemy3.csv'),
-        'enemy4': import_csv_layout('./Assets/map_files/map_1/map_1_enemy4.csv')}
+        'enemy4': import_csv_layout('./Assets/map_files/map_1/map_1_enemy4.csv'),
+        'boss': import_csv_layout('./Assets/map_files/map_1/map_1_boss.csv')}
 }
 
 

@@ -143,5 +143,4 @@ class Enemy_Shot(pygame.sprite.Sprite):
     def update(self,player):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
-       
         self.animate()
