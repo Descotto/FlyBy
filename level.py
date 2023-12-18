@@ -1,5 +1,6 @@
 import pygame
 import os
+from random import randint
 from settings import *
 from player import *
 from tiles import Tile
@@ -129,7 +130,11 @@ class Level:
     def trigger_death(self,entity):
         if entity.hp < 1:
             dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'Explosion3')
-            reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],'power_up')
+            random_number = randint(1,20)
+            if random_number < 8 and random_number > 4:
+                reward_option = {'1': {'name': 'power_up'}, '2': {'name': 'hp_up'}}
+                pick = randint(1,2)
+                reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],reward_option[str(pick)]['name'])
             entity.kill()
 
     # ==============
