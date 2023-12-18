@@ -9,6 +9,7 @@ from cannon import Cannon
 from ships import *
 from power_ups import Power_Up
 from particles import Particles
+from ui import UI
 
 class Level:
     def __init__(self,surface):
@@ -17,6 +18,7 @@ class Level:
         self.level_setup()
         self.over = False
         self.play_music('./Assets/midi/EnterSandman.mp3')
+        self.ui = UI()
         
 
     def level_setup(self):
@@ -43,7 +45,7 @@ class Level:
                         if style == 'player': 
                             player_one = Player(
                                 (x,y),
-                                [self.visuals,self.player],
+                                [self.visuals,self.player,self.entities],
                                 self.shoot,
                                 self.secondary_shot,
                                 self.call_support)
@@ -74,6 +76,7 @@ class Level:
         for sprite in self.obstacle_sprites.sprites():
             if sprite.rect.colliderect(player.hitbox):
                 player.hp = 0
+        
   
     def projectile_collision(self):
         for bullet in self.projectile_spritess.sprites():
@@ -102,8 +105,6 @@ class Level:
             
             player.last_shoot_time = current_time
 
-    
-
     def secondary_shot(self):
         player = self.player.sprite
         current_time = pygame.time.get_ticks()
@@ -124,7 +125,7 @@ class Level:
     def enemy_shoot(self,enemy,vector):
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
-            bullet = Enemy_Shot((enemy.rect.x,enemy.rect.y),[self.visuals],vector)
+            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.projectile_spritess],vector)
             enemy.last_shoot_time = current_time
 
     def trigger_death(self,entity):
@@ -156,6 +157,7 @@ class Level:
         self.check_gameover()
         self.projectile_collision()
         self.handle_reward()
+        self.ui.display(player)
         
 
 
