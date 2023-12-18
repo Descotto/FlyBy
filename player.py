@@ -17,13 +17,13 @@ class Player(pygame.sprite.Sprite):
         self.call_support = call_support
         self.support_available = True
         self.support_active = False
-        self.max_support = False
+        
         
 
 
         # movement
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 10
+        self.speed = 3
         self.status = 'idle'
 
         # stats
@@ -91,13 +91,10 @@ class Player(pygame.sprite.Sprite):
                 self.support_available = True
         if keys[pygame.K_s]:
             if self.status != 'dead' and self.support_available:
-                if not self.max_support:
+                if self.support_available:
                     self.support_available = False
                     self.call_support()
-                    if self.support_active:
-                        self.max_support = True
-                    else:
-                        self.support_active = True
+                    self.support_active = True
                         
 
     def get_status(self):
@@ -133,6 +130,7 @@ class Support(Player):
         self.support_available = False
         self.shoot = shoot
         self.status = 'idle'
+        
 
 
     def input(self):
@@ -140,6 +138,7 @@ class Support(Player):
 
         if keys[pygame.K_SPACE]:
             self.shoot(self)
+
     def animate(self):
         animation = self.animations[self.status]
 
@@ -157,6 +156,10 @@ class Support(Player):
         self.rect = self.image.get_rect(topleft = self.rect.topleft)
         # set the rect
         
+    def on_death(self,particle):
+        if self.hp <= 1:
+            particle.kill()
+
     def update(self,player):
         self.input()
         self.animate()

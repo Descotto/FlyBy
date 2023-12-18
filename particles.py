@@ -2,13 +2,15 @@ import pygame
 from support import *
 
 class Particles(pygame.sprite.Sprite):
-    def __init__(self,pos,group,particle_type):
+    def __init__(self,pos,group,particle_type,extra=None):
         super().__init__(group)
         self.import_assets()
         self.frame_index = 0
         self.animation_speed = 0.15
+        self.extra = extra
         self.particle_type = particle_type
         self.image = self.animations[self.particle_type][self.frame_index]
+        
         
         self.rect = self.image.get_rect(center =pos)
         if self.particle_type == 'Exhaust1':
@@ -55,13 +57,17 @@ class Particles(pygame.sprite.Sprite):
         # set the rect
         self.rect = self.image.get_rect(center = self.rect.center)
 
-        
     def keep_rect_pos(self,player):
         if self.particle_type == 'Exhaust1':
             self.rect.x += player.speed * player.direction.x
             self.rect.y += player.speed * player.direction.y
 
+
+
     def update(self,player):
         self.animate()
         self.keep_rect_pos(player)
+        if self.extra:
+            self.extra(self)
+   
         

@@ -48,6 +48,7 @@ TEXT_COLOR = '#EEEEEE'
 # ui colors
 HEALTH_COLOR = 'red'
 ENERGY_COLOR = 'blue'
+
 # ui
 BAR_HEIGHT = 20
 HEALTH_BAR_WIDTH = 200

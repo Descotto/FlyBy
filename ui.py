@@ -9,6 +9,8 @@ class UI:
 
         # bar setup
         self.hp_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
+        self.support_bar_rect = pygame.Rect(10, 30, HEALTH_BAR_WIDTH, BAR_HEIGHT)  # Adjust the position as needed
+
         
 
 
@@ -44,6 +46,29 @@ class UI:
         self.display_surface.blit(text_surf,text_rect)
         pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,text_rect.inflate(20,20),3)
 
+    def show_support_bar(self, support_available):
+        
+
+        # Check if support is available
+        if support_available:
+            text = "Support Ready!"
+            color = (0, 255, 0)   
+        else:
+            text = "Wait"
+            color = (128, 128, 128)  
+        # draw bg
+        pygame.draw.rect(self.display_surface,color,self.support_bar_rect)
+        pygame.draw.rect(self.display_surface,UI_BG_COLOR,self.support_bar_rect,3)
+
+        # Display the text
+        small_font = pygame.font.Font(None, 24)
+        text_surf = small_font.render(text, False, (0,0,0))
+        text_rect = text_surf.get_rect(center=(self.support_bar_rect.centerx, self.support_bar_rect.centery))
+
+        self.display_surface.blit(text_surf, text_rect)
+        pygame.draw.rect(self.display_surface, UI_BG_COLOR, self.support_bar_rect, 3)
+
     def display(self,player):
-        self.show_bar(player.hp,10, self.hp_bar_rect, HEALTH_COLOR)
+        self.show_bar(player.hp,10,self.hp_bar_rect, HEALTH_COLOR)
+        self.show_support_bar(player.support_available)
         

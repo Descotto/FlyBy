@@ -124,12 +124,12 @@ class Level:
 
     def call_support(self):
         player = self.player.sprite
-        if player.support_active:
-            support = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
-            exhaust = Particles((support.rect.x,support.rect.y),[self.visuals],'Exhaust1')
-        else:
-            support = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
-            exhaust = Particles((support.rect.x,support.rect.y),[self.visuals],'Exhaust1')
+        
+        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
+        exhaust = Particles((support1.rect.x,support1.rect.y),[self.visuals],'Exhaust1',support1.on_death)
+        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
+        exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
+        
     # ==============
     # ENEMY ACTIONS
     def enemy_shoot(self,enemy,vector):
