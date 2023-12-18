@@ -18,11 +18,12 @@ class Player(pygame.sprite.Sprite):
         self.support_available = True
         self.support_active = False
         self.max_support = False
+        
 
 
         # movement
         self.direction = pygame.math.Vector2(0,0)
-        self.speed = 2
+        self.speed = 10
         self.status = 'idle'
 
         # stats

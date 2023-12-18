@@ -12,24 +12,28 @@ from particles import Particles
 from ui import UI
 
 class Level:
-    def __init__(self,surface):
-        
+    def __init__(self,surface,area):
+        self.area = area
+        self.next_lv = False
         self.display_surface = surface
         self.level_setup()
         self.over = False
         self.play_music('./Assets/midi/EnterSandman.mp3')
         self.ui = UI()
         
+        
 
     def level_setup(self):
-        self.visuals = YSortCameraGroup()
+        self.visuals = YSortCameraGroup(self.area)
         self.obstacle_sprites = pygame.sprite.Group()
-        self.projectile_spritess = pygame.sprite.Group()
+        self.projectile_sprites = pygame.sprite.Group()
+        self.enemy_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.entities = pygame.sprite.Group()
+        self.leve_up_sprites = pygame.sprite.Group()
         self.rewards = pygame.sprite.Group()
 
-        maps = MAP_LAYOUTS['map_1']
+        maps = MAP_LAYOUTS[f'map_{self.area}']
         
         for style,map in maps.items():
             for row_index, row in enumerate(map):
@@ -41,11 +45,13 @@ class Level:
                     if cell != '-1':
                         if style == 'floor':
                             tile = Tile((x,y), [self.obstacle_sprites])
+                        if style == 'to_next':
+                            tile = Tile((x,y), [self.leve_up_sprites])
                             # CREATING PLAYER 
                         if style == 'player': 
                             player_one = Player(
                                 (x,y),
-                                [self.visuals,self.player,self.entities],
+                                [self.visuals,self.player],
                                 self.shoot,
                                 self.secondary_shot,
                                 self.call_support)
@@ -77,9 +83,8 @@ class Level:
             if sprite.rect.colliderect(player.hitbox):
                 player.hp = 0
         
-  
     def projectile_collision(self):
-        for bullet in self.projectile_spritess.sprites():
+        for bullet in self.projectile_sprites.sprites():
             for obstacle in self.obstacle_sprites.sprites():
                 if obstacle.rect.colliderect(bullet.rect):
                     #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
@@ -91,6 +96,11 @@ class Level:
                     #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
+
+            for projectile in self.enemy_bullets.sprites():
+                if projectile.rect.colliderect(bullet.rect):
+                    projectile.speed -= 2
+
     def check_gameover(self):
         player = self.player.sprite
         if player.hp < -10:
@@ -101,7 +111,7 @@ class Level:
         
         current_time = pygame.time.get_ticks()
         if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(player.rect,[self.visuals,self.projectile_spritess])
+            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],'Shot7')
             
             player.last_shoot_time = current_time
 
@@ -109,7 +119,7 @@ class Level:
         player = self.player.sprite
         current_time = pygame.time.get_ticks()
         if current_time - player.last_s_time > player.s_cooldown * 1000:
-            bullet = D_Bullet(self.player.sprite.rect,[self.visuals,self.projectile_spritess])
+            bullet = D_Bullet(self.player.sprite.rect,[self.visuals,self.projectile_sprites])
             player.last_s_time = current_time
 
     def call_support(self):
@@ -125,16 +135,17 @@ class Level:
     def enemy_shoot(self,enemy,vector):
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
-            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.projectile_spritess],vector)
+            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.projectile_sprites],vector)
             enemy.last_shoot_time = current_time
 
     def trigger_death(self,entity):
         if entity.hp < 1:
-            dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'Explosion3')
+            dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'mega_explosion')
             random_number = randint(1,20)
             if random_number < 8 and random_number > 4:
                 reward_option = {'1': {'name': 'power_up'}, '2': {'name': 'hp_up'}}
                 pick = randint(1,2)
+                
                 reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],reward_option[str(pick)]['name'])
             entity.kill()
 
@@ -147,6 +158,12 @@ class Level:
             if sprite.rect.colliderect(player.hitbox):
                 sprite.action(player)
 
+    def handle_area(self):
+        player = self.player.sprite
+        for sprite in self.leve_up_sprites.sprites():
+            if sprite.rect.colliderect(player.hitbox):
+                self.next_lv = True
+                
     # ==============    
 
     def run(self):
@@ -158,22 +175,24 @@ class Level:
         self.projectile_collision()
         self.handle_reward()
         self.ui.display(player)
+        self.handle_area()
         
 
 
 
 class YSortCameraGroup(pygame.sprite.Group):
-    def __init__(self):
+    def __init__(self,area):
 
         super().__init__()
+        self.area = area
         self.display_surface = pygame.display.get_surface()
-        self.half_width = self.display_surface.get_size()[0] // 3
+        self.half_width = self.display_surface.get_size()[0] // 7 
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
 
         #CREATE FLOOR
        
-        self.floor_surf = pygame.image.load('./Assets/map_files/map_1/map_1.png').convert()
+        self.floor_surf = pygame.image.load(MAP_URL[f'map_{self.area}']['url']).convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
     def custom_draw(self,player):

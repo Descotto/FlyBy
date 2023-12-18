@@ -26,6 +26,7 @@ class Particles(pygame.sprite.Sprite):
             'Explosion1':[],
             'Explosion2': [],
             'Explosion3':[],
+            'mega_explosion': [],
             'Shot1':[],
             'Shot2':[],
             'Shot3':[],

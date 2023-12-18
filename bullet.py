@@ -3,7 +3,7 @@ import math
 from support import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self,player_rect,group):
+    def __init__(self,player_rect,group,type='Shot1'):
         super().__init__(group)
         self.import_bullet_assets()
         self.frame_index = 0
@@ -13,7 +13,7 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = 10
 
         # bullet type
-        self.type = 'Shot1'
+        self.type = type
         
         
 
@@ -28,7 +28,7 @@ class Bullet(pygame.sprite.Sprite):
        
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
-        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[]}
+        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[], 'Shot7': []}
 
         for animation in self.animations.keys():
             full_path = bullet_path + animation
