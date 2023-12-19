@@ -34,7 +34,8 @@ class Particles(pygame.sprite.Sprite):
             'Shot3':[],
             'Shot4':[],
             'Shot5':[],
-            'Shot6':[]}
+            'Shot6':[],
+            'Shot7':[]}
 
         for animation in self.animations.keys():
             full_path = particles_path + animation

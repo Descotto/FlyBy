@@ -96,13 +96,13 @@ class Level:
         for bullet in self.projectile_sprites.sprites():
             for obstacle in self.obstacle_sprites.sprites():
                 if obstacle.rect.colliderect(bullet.rect):
-                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
             for entity in self.entities.sprites():
                 if entity.rect.colliderect(bullet.rect):
                     entity.take_damage()
-                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
 
