@@ -35,6 +35,8 @@ class Ship2(Enemy):
         self.moving = True
         self.speed = 1
         self.hp = 5
+        self.rect = self.image.get_rect(topleft = pos)
+        self.hitbox = self.rect.inflate(-64,-96)
 
 
 
@@ -44,7 +46,7 @@ class Ship2(Enemy):
     def update(self,player):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
-        self.hitbox.center = self.rect.center
+        self.hitbox.center= self.rect.center
         self.get_player_distance_direction(player)
         self.trigger_death(self)
 
@@ -61,6 +63,8 @@ class Ship3(Enemy):
         self.image = self.flip
         self.moving = True
         self.speed = 2
+        self.rect = self.image.get_rect(topleft = pos)
+        self.hitbox = self.rect.inflate(-64,-96)
 
 
     def update(self,player):
@@ -82,6 +86,8 @@ class Ship4(Enemy):
         self.image = self.flip
         self.moving = True
         self.speed = 2
+        self.rect = self.image.get_rect(topleft = pos)
+        self.hitbox = self.rect.inflate(-32,-96)
 
 
     def update(self,player):

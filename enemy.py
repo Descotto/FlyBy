@@ -13,14 +13,14 @@ class Enemy(pygame.sprite.Sprite):
         self.trigger_death = trigger_death
 
         # stats
-        self.hp = 3
+        self.hp = 2
 
         # cooldowns
         self.moving = False
         self.bullet_cooldown = 0.7
         self.last_shoot_time = 0
         self.last_vulnerable = 0
-        self.vulnerable_cooldown = 0.2
+        self.vulnerable_cooldown = 0.1
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)

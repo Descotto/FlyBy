@@ -25,6 +25,14 @@ class Bullet(pygame.sprite.Sprite):
         # Set the initial position of the bullet based on the player's position
  
         self.rect = self.image.get_rect(midleft=(player_rect.x +70, player_rect.y + 32))
+        if self.type == 'Shot1':
+            self.hitbox = self.rect.inflate(-25,-25)
+        elif self.type in ['Shot5','Shot6']:
+            self.hitbox = self.rect.inflate(-120,-120)
+        elif self.type == 'Shot7':
+            self.hitbox = self.rect.inflate(-16,-16)
+        else:
+            self.hitbox = self.rect.inflate(-52,-52)
        
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
@@ -45,10 +53,19 @@ class Bullet(pygame.sprite.Sprite):
         image = animation[int(self.frame_index)]
         self.image = image
 
+    def check_offscreen(self,player):
+        start_position = player.rect.x
+        if self.direction:
+            if self.rect.x >= (start_position + 1000): 
+                self.kill()
+             
+
     def update(self,player):
         # Move the bullet horizontally
         self.rect.x += self.speed * self.direction.x
+        self.hitbox.center = self.rect.center
         self.animate()
+        self.check_offscreen(player)
 
 class D_Bullet(pygame.sprite.Sprite):
     def __init__(self,player_rect,group):
@@ -68,6 +85,7 @@ class D_Bullet(pygame.sprite.Sprite):
         self.image = self.animations[self.type][self.frame_index]
         self.direction = pygame.math.Vector2(2,1)
         self.rect = self.image.get_rect(midleft=(player_rect.x +57, player_rect.y + 32))
+        
 
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
@@ -95,6 +113,7 @@ class D_Bullet(pygame.sprite.Sprite):
     def update(self,player):
         # Move the bullet in an angle
         self.rect.x += self.speed * self.direction.x
+        self.hitbox.center = self.rect.center
         self.add_gravity()
         self.add_gravity()
         self.animate()
@@ -109,7 +128,7 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.damage = 1
         self.speed = 10
 
-        self.type = 'Shot2'
+        self.type = 'Shot7'
         self.damage = 2
         self.speed = 5
         self.direction = pygame.math.Vector2(vector)
@@ -119,10 +138,18 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.height = 5
         self.image = self.image = self.animations[self.type][self.frame_index]
         self.rect = self.image.get_rect(topright = enemy_rect.topleft)
+        if self.type == 'Shot1':
+            self.hitbox = self.rect.inflate(-25,-25)
+        elif self.type in ['Shot5','Shot6']:
+            self.hitbox = self.rect.inflate(-120,-120)
+        elif self.type == 'Shot7':
+            self.hitbox = self.rect.inflate(-16,-16)
+        else:
+            self.hitbox = self.rect.inflate(-52,-52)
 
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
-        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[]}
+        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[],'Shot7': []}
 
         for animation in self.animations.keys():
             full_path = bullet_path + animation
@@ -143,4 +170,5 @@ class Enemy_Shot(pygame.sprite.Sprite):
     def update(self,player):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
+        self.hitbox.center = self.rect.midleft
         self.animate()

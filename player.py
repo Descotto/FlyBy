@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         
 
         # cooldowns
-        self.bullet_cooldown = 0.5
+        self.bullet_cooldown = 0.2
         self.last_shoot_time = 0
         self.s_cooldown = 0.5
         self.last_s_time = 0
