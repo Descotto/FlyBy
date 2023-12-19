@@ -78,7 +78,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_RIGHT]:
             self.direction.x = 2
         elif keys[pygame.K_LEFT]:
-            self.direction.x = 0.5
+            self.direction.x = 0.2
         else:
             self.direction.x = 1
 
@@ -167,3 +167,16 @@ class Support(Player):
         self.direction = player.direction
         self.rect.x += player.speed * player.direction.x
         self.rect.y += player.speed * player.direction.y
+
+
+
+class Driver(Player):
+    def __init__(self,pos,group,shoot,s_shot,call_support):
+        super().__init__(pos,group,shoot,s_shot,call_support)
+        self.direction = pygame.math.Vector2(1,0)
+
+
+
+    def update(self):
+        self.rect.x += self.direction.x * self.speed
+        self.rect.y += self.direction.y * self.speed

@@ -29,6 +29,7 @@ class Level:
         self.projectile_sprites = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.driver = pygame.sprite.GroupSingle()
         self.entities = pygame.sprite.Group()
         self.leve_up_sprites = pygame.sprite.Group()
         self.rewards = pygame.sprite.Group()
@@ -57,6 +58,14 @@ class Level:
                                 self.call_support)
                             player_one.support = True
                             exhaust = Particles((x,y),[self.visuals],'Exhaust1')
+                            # DRIVER
+                        if style == 'driver':
+                            driver = Driver(
+                                (x,y),
+                                [self.driver],
+                                self.shoot,
+                                self.secondary_shot,
+                                self.call_support)
 
                         if style == 'cannons':
                             cannon = Cannon((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
@@ -168,8 +177,10 @@ class Level:
 
     def run(self):
         player = self.player.sprite
-        self.visuals.custom_draw(player)
+        driver = self.driver.sprite
+        self.visuals.custom_draw(driver)
         self.visuals.update(player)
+        self.driver.update()
         self.collisions(player)
         self.check_gameover()
         self.projectile_collision()
@@ -199,7 +210,8 @@ class YSortCameraGroup(pygame.sprite.Group):
 
         # offset
         self.offset.x = player.rect.centerx - self.half_width
-        self.offset.y = player.rect.centery - self.half_height
+        self.offset.y = 0
+        # self.offset.y = player.rect.centery - self.half_height
 
         # draw floor
         floor_upset_pos = self.floor_rect.topleft - self.offset
@@ -209,5 +221,3 @@ class YSortCameraGroup(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image,offset_pos)
-
-

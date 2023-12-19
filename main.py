@@ -10,7 +10,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 1
+area = 3
 level = Level(screen,area)
 game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT,  60, (255, 255, 255))
 image = pygame.image.load('./Assets/map_files/map_1/map_1.png')

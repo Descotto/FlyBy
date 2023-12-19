@@ -3,7 +3,7 @@ from support import *
 
 
 SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 600
+SCREEN_HEIGHT = 640
 TILE_SIZE = 64
 
 
@@ -27,12 +27,20 @@ MAP_LAYOUTS = {
         'enemy2': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship2.csv'),
         'enemy3': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship3.csv'),
         'enemy4': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship4.csv'),
-        'boss': import_csv_layout('./Assets/map_files/map_2/flyby_2_boss.csv')}
-}
+        'boss': import_csv_layout('./Assets/map_files/map_2/flyby_2_boss.csv')},
+    'map_3': {
+        'player': import_csv_layout('./Assets/map_files/map_3/flyby_3_player.csv'),
+        'enemy1': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy1.csv'),
+        'enemy2': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy2.csv'),
+        'enemy3': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy3.csv'),
+        'enemy4': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy4.csv'),
+        'driver': import_csv_layout('./Assets/map_files/map_3/flyby_3_driver.csv')
+}}
 
 MAP_URL = {
     'map_1': {'url': './Assets/map_files/map_1/map_1.png'},
-    'map_2': {'url': './Assets/map_files/map_2/flyby_2.png'}
+    'map_2': {'url': './Assets/map_files/map_2/flyby_2.png'},
+    'map_3': {'url': './Assets/map_files/map_3/flyby_3.png'}
 }
 
 
