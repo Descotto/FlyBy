@@ -19,6 +19,7 @@ class Particles(pygame.sprite.Sprite):
             self.rect.x -= 10
             self.rect.y += 30
 
+        self.hitbox = self.rect.copy()
 
 
     def import_assets(self):
@@ -62,18 +63,31 @@ class Particles(pygame.sprite.Sprite):
 
         # set the rect
         self.rect = self.image.get_rect(center = self.rect.center)
+        
 
     def keep_rect_pos(self,player):
         if self.particle_type in ['Exhaust1', 'Exhaust2', 'Exhaust3', 'bubble']:
             self.rect.x += player.speed * player.direction.x
             self.rect.y += player.speed * player.direction.y
+            # update the hitbox after updating the rect
+            self.hitbox.center = player.rect.center
+            
+            
 
-
+    def take_damage(self):
+        self.hp -= 1
+        if self.hp <= 0:
+            self.kill()
+    
 
     def update(self,player):
         self.animate()
         self.keep_rect_pos(player)
+        
         if self.extra:
             self.extra(self)
+
+        
+
    
         

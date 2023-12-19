@@ -30,6 +30,7 @@ class Level:
         self.enemy_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.driver = pygame.sprite.GroupSingle()
+        self.shield_sprites = pygame.sprite.Group()
         self.entities = pygame.sprite.Group()
         self.leve_up_sprites = pygame.sprite.Group()
         self.rewards = pygame.sprite.Group()
@@ -107,10 +108,28 @@ class Level:
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
+                #for projectile in self.enemy_bullets.sprites():
+                #     if projectile.rect.colliderect(bullet.rect):
+                #         projectile.speed -= 2
 
-            for projectile in self.enemy_bullets.sprites():
-                if projectile.rect.colliderect(bullet.rect):
-                    projectile.speed -= 2
+    def enemy_projectile_collision(self):
+        for bullet in self.enemy_bullets.sprites():
+            for obstacle in self.obstacle_sprites.sprites():
+                if obstacle.rect.colliderect(bullet.rect):
+                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    bullet.kill()
+
+            for entity in self.entities.sprites():
+                if entity.rect.colliderect(bullet.rect):
+                    entity.take_damage()
+                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    bullet.kill()
+
+            for shield in self.shield_sprites.sprites():
+                if shield.rect.colliderect(bullet.rect):
+                    shield.take_damage()
+                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    bullet.kill()
 
     def check_gameover(self):
         player = self.player.sprite
@@ -136,14 +155,14 @@ class Level:
     def call_support(self):
         player = self.player.sprite
         
-        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
+        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support,self.shield)
         exhaust = Particles((support1.rect.x,support1.rect.y),[self.visuals],'Exhaust1',support1.on_death)
-        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
+        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support,self.shield)
         exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
         
     def shield(self):
         player = self.player.sprite
-        shield = Particles((player.rect.centerx,player.rect.centery),[self.visuals], 'bubble')
+        shield = Particles((player.rect.centerx,player.rect.centery),[self.shield_sprites,self.visuals], 'bubble')
     # ==============
     # ENEMY ACTIONS
     def enemy_shoot(self,enemy,vector):
@@ -177,7 +196,9 @@ class Level:
         for sprite in self.leve_up_sprites.sprites():
             if sprite.rect.colliderect(player.hitbox):
                 self.next_lv = True
-                
+
+    def draw_shield_hitbox(self,shield):
+        pygame.draw.rect(self.display_surface, (255, 255, 255), shield.hitbox, 2)
     # ==============    
 
     def run(self):
@@ -192,6 +213,7 @@ class Level:
         self.handle_reward()
         self.ui.display(player)
         self.handle_area()
+        self.enemy_projectile_collision()
         
 
 
@@ -226,3 +248,8 @@ class YSortCameraGroup(pygame.sprite.Group):
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image,offset_pos)
+
+            if hasattr(sprite, 'hitbox'):
+                hitbox_offset_pos = sprite.hitbox.topleft - self.offset
+                hitbox_rect = pygame.Rect(hitbox_offset_pos, sprite.hitbox.size)  # Create a Rect object
+                pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
