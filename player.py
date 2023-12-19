@@ -3,7 +3,7 @@ from support import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,group,shoot,s_shot,call_support):
+    def __init__(self,pos,group,shoot,s_shot,call_support,shield):
         super().__init__(group)
 
         self.import_character_assets()
@@ -14,9 +14,12 @@ class Player(pygame.sprite.Sprite):
         self.hitbox = self.rect.inflate(0,-32)
         self.shoot = shoot
         self.s_shoot = s_shot
+        self.shield = shield
         self.call_support = call_support
         self.support_available = True
         self.support_active = False
+        self.shield_ready = True
+        
         
         
 
@@ -38,6 +41,7 @@ class Player(pygame.sprite.Sprite):
         self.last_s_time = 0
         self.vulnerable_cooldown = 0.9
         self.last_vulnerable = 0
+        
 
     def import_character_assets(self):
         character_path = 'Assets/player/'
@@ -88,15 +92,18 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_x]:
             if self.status != 'dead':
                 self.s_shoot()
-                self.support_available = True
         if keys[pygame.K_s]:
             if self.status != 'dead' and self.support_available:
                 if self.support_available:
                     self.support_available = False
                     self.call_support()
                     self.support_active = True
-                        
 
+        if keys[pygame.K_a]:
+            if self.shield_ready:
+                self.shield_ready = False
+                self.shield()
+                        
     def get_status(self):
         if self.hp <= 1:
             self.status = 'dead'
@@ -124,8 +131,8 @@ class Player(pygame.sprite.Sprite):
 
 
 class Support(Player):
-    def __init__(self,pos,group,shoot,s_shot,call_support):
-        super().__init__(pos,group,shoot,s_shot,call_support)
+    def __init__(self,pos,group,shoot,s_shot,call_support,shield):
+        super().__init__(pos,group,shoot,s_shot,call_support,shield)
         self.hp = 2
         self.support_available = False
         self.shoot = shoot
@@ -169,12 +176,10 @@ class Support(Player):
         self.rect.y += player.speed * player.direction.y
 
 
-
 class Driver(Player):
-    def __init__(self,pos,group,shoot,s_shot,call_support):
-        super().__init__(pos,group,shoot,s_shot,call_support)
+    def __init__(self,pos,group,shoot,s_shot,call_support,shield):
+        super().__init__(pos,group,shoot,s_shot,call_support,shield)
         self.direction = pygame.math.Vector2(1,0)
-
 
 
     def update(self):

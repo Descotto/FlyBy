@@ -10,10 +10,12 @@ class Particles(pygame.sprite.Sprite):
         self.extra = extra
         self.particle_type = particle_type
         self.image = self.animations[self.particle_type][self.frame_index]
+        if self.particle_type == 'bubble':
+            self.hp = 20
         
         
         self.rect = self.image.get_rect(center =pos)
-        if self.particle_type == 'Exhaust1':
+        if self.particle_type in ['Exhaust1', 'Exhaust2', 'Exhaust3']:
             self.rect.x -= 10
             self.rect.y += 30
 
@@ -32,10 +34,11 @@ class Particles(pygame.sprite.Sprite):
             'Shot1':[],
             'Shot2':[],
             'Shot3':[],
-            'Shot4':[],
+            'Shot4':[],    
             'Shot5':[],
             'Shot6':[],
-            'Shot7':[]}
+            'Shot7':[],
+            'bubble':[]}
 
         for animation in self.animations.keys():
             full_path = particles_path + animation
@@ -48,8 +51,10 @@ class Particles(pygame.sprite.Sprite):
         # loop over frame index
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
-            self.frame_index = -1
-            if self.particle_type != 'Exhaust1':
+            self.frame_index -= 1
+            if self.particle_type in [
+                'Explosion1','Explosion2','Explosion3','mega_explosion',
+                'Shot1','Shot2','Shot3','Shot4','Shot5','Shot6','Shot7']:
                 self.kill()
 
         self.image = animation[int(self.frame_index)]
@@ -59,7 +64,7 @@ class Particles(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center = self.rect.center)
 
     def keep_rect_pos(self,player):
-        if self.particle_type == 'Exhaust1':
+        if self.particle_type in ['Exhaust1', 'Exhaust2', 'Exhaust3', 'bubble']:
             self.rect.x += player.speed * player.direction.x
             self.rect.y += player.speed * player.direction.y
 

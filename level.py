@@ -55,7 +55,8 @@ class Level:
                                 [self.visuals,self.player],
                                 self.shoot,
                                 self.secondary_shot,
-                                self.call_support)
+                                self.call_support,
+                                self.shield)
                             player_one.support = True
                             exhaust = Particles((x,y),[self.visuals],'Exhaust1')
                             # DRIVER
@@ -65,7 +66,8 @@ class Level:
                                 [self.driver],
                                 self.shoot,
                                 self.secondary_shot,
-                                self.call_support)
+                                self.call_support,
+                                self.shield)
 
                         if style == 'cannons':
                             cannon = Cannon((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
@@ -139,6 +141,9 @@ class Level:
         support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support)
         exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
         
+    def shield(self):
+        player = self.player.sprite
+        shield = Particles((player.rect.centerx,player.rect.centery),[self.visuals], 'bubble')
     # ==============
     # ENEMY ACTIONS
     def enemy_shoot(self,enemy,vector):

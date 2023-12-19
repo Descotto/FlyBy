@@ -1,0 +1,189 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+dist/
+build/
+*.exe
+*.spec
+
+# mypy
+.mypy_cache/
+
+# Pyre type checker
+.pyre/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+Pipfile.toml
+/.venv/
+
+# Poetry
+poetry.lock
+
+# environments
+.env
+.venv
+venv/
+ENV/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
+# Jupyter
+*.ipynb
+*.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Sublime Text
+.sublime-project
+.sublime-workspace
+
+# virtualenv
+*.pyc
+__pycache__/
+*.pyc
+
+# Scrapy
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyInstaller
+build/
+dist/
+
+# node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Android
+*.apk
+*.aab
+
+# iOS
+*.ipa
+*.xcarchive
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.gz
+*.tar
+*.tgz
+*.bzip
+*.bz2
+*.xz
+*.lzma
+*.zst
+
+# Subversion
+.svn/
+
+# CVS
+CVS/
+.cvsignore
+
+# Mercurial
+.hg/
+.hgignore
+.hgsub
+.hgsubstate
+.hgtags
+
+# Bazaar
+.bzr/
+/.bzrignore
+/.bzrtags
+
+# JetBrains
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
