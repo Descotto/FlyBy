@@ -19,6 +19,7 @@ class Level:
         self.level_setup()
         self.over = False
         self.started = False
+        self.start_text = False
         # self.play_music('./Assets/midi/EnterSandman.mp3')
         self.ui = UI()
         

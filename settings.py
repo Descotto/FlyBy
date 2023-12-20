@@ -64,3 +64,20 @@ ENERGY_BAR_WIDTH = 140
 ITEM_BOX_SIZE = 80
 UI_FONT = 'Arial'
 UI_FONT_SIZE = 18
+
+
+
+START_TEXT = (
+    "The year was 2030, after we destroyed the world with the \"Armaggedon War\".\n"
+    "That's when they attacked. Some think our bombs are what made them come.\n"
+    "They eliminated a quarter of the population in a week, they had no reason to fear us...\n"
+    "That was until the remaining superpowers launched an attack with everything they had left.\n"
+    "These ships were more human in their structure; we understood how they worked once we captured one.\n"
+    "We developed a gravity cannon that is powered by the ship's core.\n"
+    "We pushed even as they kept bombing our cities...\n"
+    "We pushed...\n"
+    "The year is 2077... My name is David, I am the last millennial.\n"
+    "We are ready...\n"
+    "Now it's in your hands... fly Pilot.\n"
+    "Press Enter"
+)
