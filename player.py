@@ -19,6 +19,9 @@ class Player(pygame.sprite.Sprite):
         self.support_available = True
         self.support_active = False
         self.shield_ready = True
+        self.shield_active = False
+        self.shield_charging = False
+        self.shield_hp = 1
         
         
         
@@ -41,6 +44,8 @@ class Player(pygame.sprite.Sprite):
         self.last_s_time = 0
         self.vulnerable_cooldown = 0.9
         self.last_vulnerable = 0
+        self.shield_timer = 0
+        self.shield_clock = pygame.time.Clock()
         
 
     def import_character_assets(self):
@@ -98,11 +103,13 @@ class Player(pygame.sprite.Sprite):
                     self.support_available = False
                     self.call_support()
                     self.support_active = True
+                    self.shield_ready = False
 
         if keys[pygame.K_a]:
             if self.shield_ready:
                 self.shield_ready = False
                 self.shield()
+                self.shield_active = True
                         
     def get_status(self):
         if self.hp <= 1:
@@ -121,12 +128,31 @@ class Player(pygame.sprite.Sprite):
             self.hp -= 1
             self.last_vulnerable = current_time
 
+    def update_shield_hp(self):
+        # Get the time elapsed since the last frame in milliseconds
+        delta_time = self.shield_clock.tick(60) / 1000.0  
+        # Increment the timer
+        self.shield_timer += delta_time
+        if self.shield_hp <= 1:
+            self.shield_charging = True
+            
+        if self.shield_charging:
+        # Check if 1 second has passed
+            if self.shield_timer >= 1.0:
+                # Reset the timer
+                self.shield_timer -= 1.0
+                # Add 1 to shield_hp
+                self.shield_hp += 1
+            if self.shield_hp >= 20:
+                self.shield_ready = True
+                self.shield_charging = False
+
     def update(self,player):
         self.hitbox.center = self.rect.center
         self.input()
         self.animate()
         self.get_status()
-
+        self.update_shield_hp()
 
 
 

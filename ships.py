@@ -9,6 +9,7 @@ class Ship1(Enemy):
         self.image = self.flip
         self.moving = True
         self.speed = 2
+        
 
 
 
@@ -37,6 +38,8 @@ class Ship2(Enemy):
         self.hp = 5
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-64,-96)
+        self.bullet_type = 'Shot4'
+
 
 
 

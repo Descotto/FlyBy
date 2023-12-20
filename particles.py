@@ -20,7 +20,10 @@ class Particles(pygame.sprite.Sprite):
             self.rect.y += 30
 
         self.hitbox = self.rect.copy()
-
+        if self.particle_type == 'bubble':
+            self.radius = 58  # Adjust the radius according to your needs
+            self.hitbox_center = pygame.math.Vector2(self.rect.center)
+            self.hitbox_radius = self.radius
 
     def import_assets(self):
         particles_path = 'Assets/particles/'
@@ -64,16 +67,17 @@ class Particles(pygame.sprite.Sprite):
         # set the rect
         self.rect = self.image.get_rect(center = self.rect.center)
         
-
     def keep_rect_pos(self,player):
         if self.particle_type in ['Exhaust1', 'Exhaust2', 'Exhaust3', 'bubble']:
             self.rect.x += player.speed * player.direction.x
             self.rect.y += player.speed * player.direction.y
             # update the hitbox after updating the rect
-            self.hitbox.center = player.rect.center
-            
-            
+            if self.particle_type == 'bubble':
+                self.hitbox = self.rect.inflate(-32,-32)
 
+            self.hitbox.center = player.rect.center
+            self.hitbox_center = player.rect.center
+            
     def take_damage(self):
         self.hp -= 1
         if self.hp <= 0:
@@ -86,6 +90,10 @@ class Particles(pygame.sprite.Sprite):
         
         if self.extra:
             self.extra(self)
+
+        if self.particle_type == 'bubble':
+            player.shield_hp = self.hp
+            
 
         
 

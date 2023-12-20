@@ -11,6 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         
         self.shoot = shoot
         self.trigger_death = trigger_death
+        self.bullet_type = 'Shot3'
 
         # stats
         self.hp = 2

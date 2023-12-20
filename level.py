@@ -18,19 +18,19 @@ class Level:
         self.display_surface = surface
         self.level_setup()
         self.over = False
-        self.play_music('./Assets/midi/EnterSandman.mp3')
+        # self.play_music('./Assets/midi/EnterSandman.mp3')
         self.ui = UI()
         
         
 
     def level_setup(self):
-        self.visuals = YSortCameraGroup(self.area)
+        self.shield_sprites = pygame.sprite.Group()
+        self.visuals = YSortCameraGroup(self.area,self.shield_sprites)
         self.obstacle_sprites = pygame.sprite.Group()
         self.projectile_sprites = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.driver = pygame.sprite.GroupSingle()
-        self.shield_sprites = pygame.sprite.Group()
         self.entities = pygame.sprite.Group()
         self.leve_up_sprites = pygame.sprite.Group()
         self.rewards = pygame.sprite.Group()
@@ -141,7 +141,7 @@ class Level:
         
         current_time = pygame.time.get_ticks()
         if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],'Shot7')
+            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],'Shot1')
             
             player.last_shoot_time = current_time
 
@@ -168,7 +168,7 @@ class Level:
     def enemy_shoot(self,enemy,vector):
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
-            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.projectile_sprites],vector)
+            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type)
             enemy.last_shoot_time = current_time
 
     def trigger_death(self,entity):
@@ -197,8 +197,17 @@ class Level:
             if sprite.rect.colliderect(player.hitbox):
                 self.next_lv = True
 
-    def draw_shield_hitbox(self,shield):
-        pygame.draw.rect(self.display_surface, (255, 255, 255), shield.hitbox, 2)
+    def shield_collision(self):
+        for bullet in self.enemy_bullets.sprites():
+            for shield in self.shield_sprites.sprites():
+                if shield.hitbox.colliderect(bullet.hitbox):
+                    shield.take_damage()
+                    bullet.kill()
+                
+
+
+                    
+
     # ==============    
 
     def run(self):
@@ -214,12 +223,13 @@ class Level:
         self.ui.display(player)
         self.handle_area()
         self.enemy_projectile_collision()
+        self.shield_collision()
         
 
 
 
 class YSortCameraGroup(pygame.sprite.Group):
-    def __init__(self,area):
+    def __init__(self,area,shield_sprites):
 
         super().__init__()
         self.area = area
@@ -227,6 +237,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.half_width = self.display_surface.get_size()[0] // 7 
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
+        self.shield_sprites = shield_sprites
 
         #CREATE FLOOR
        
@@ -251,5 +262,24 @@ class YSortCameraGroup(pygame.sprite.Group):
 
             if hasattr(sprite, 'hitbox'):
                 hitbox_offset_pos = sprite.hitbox.topleft - self.offset
-                hitbox_rect = pygame.Rect(hitbox_offset_pos, sprite.hitbox.size)  # Create a Rect object
+                hitbox_rect = pygame.Rect(hitbox_offset_pos, sprite.hitbox.size)
                 pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
+
+        for sprite in self.shield_sprites:
+            if hasattr(sprite, 'hitbox_center'):
+                # Use sprite.hitbox_center as a Vector2
+                hitbox_offset_pos = sprite.hitbox_center - pygame.math.Vector2(self.offset, 0)
+                
+                # Convert the hitbox_offset_pos to a tuple (x, y) for pygame.Rect
+                hitbox_rect = pygame.Rect(hitbox_offset_pos.x, hitbox_offset_pos.y, sprite.rect.size[0], sprite.rect.size[1])
+
+                # Draw the circle using the hitbox center and radius
+                pygame.draw.circle(self.display_surface, (255, 255, 255), hitbox_rect.topleft, sprite.hitbox_radius, 2)
+
+
+                
+                
+
+
+            
+                
