@@ -11,7 +11,7 @@ class Particles(pygame.sprite.Sprite):
         self.particle_type = particle_type
         self.image = self.animations[self.particle_type][self.frame_index]
         if self.particle_type == 'bubble':
-            self.hp = 20
+            self.hp = 10
         
         
         self.rect = self.image.get_rect(center =pos)

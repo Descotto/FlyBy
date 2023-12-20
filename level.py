@@ -30,6 +30,7 @@ class Level:
         self.projectile_sprites = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.support = pygame.sprite.Group()
         self.driver = pygame.sprite.GroupSingle()
         self.entities = pygame.sprite.Group()
         self.leve_up_sprites = pygame.sprite.Group()
@@ -98,37 +99,34 @@ class Level:
     def projectile_collision(self):
         for bullet in self.projectile_sprites.sprites():
             for obstacle in self.obstacle_sprites.sprites():
-                if obstacle.rect.colliderect(bullet.rect):
+                if obstacle.hitbox.colliderect(bullet.hitbox):
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
             for entity in self.entities.sprites():
                 if entity.rect.colliderect(bullet.rect):
+                    print('hit')
                     entity.take_damage()
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
-                    bullet.kill()
-
-                #for projectile in self.enemy_bullets.sprites():
-                #     if projectile.rect.colliderect(bullet.rect):
-                #         projectile.speed -= 2
+                    bullet.kill()            
 
     def enemy_projectile_collision(self):
         for bullet in self.enemy_bullets.sprites():
             for obstacle in self.obstacle_sprites.sprites():
-                if obstacle.rect.colliderect(bullet.rect):
+                if obstacle.hitbox.colliderect(bullet.hitbox):
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
-            for entity in self.entities.sprites():
-                if entity.rect.colliderect(bullet.rect):
+            for entity in self.support.sprites():
+                if entity.hitbox.colliderect(bullet.hitbox):
                     entity.take_damage()
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
             for shield in self.shield_sprites.sprites():
-                if shield.rect.colliderect(bullet.rect):
+                if shield.hitbox.colliderect(bullet.hitbox):
                     shield.take_damage()
-                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    particle = Particles((bullet.hitbox.x,bullet.hitbox.y),[self.visuals],bullet.type)
                     bullet.kill()
 
     def check_gameover(self):
@@ -155,9 +153,9 @@ class Level:
     def call_support(self):
         player = self.player.sprite
         
-        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support,self.shield)
+        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.support],self.shoot,self.secondary_shot,self.call_support,self.shield)
         exhaust = Particles((support1.rect.x,support1.rect.y),[self.visuals],'Exhaust1',support1.on_death)
-        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.entities],self.shoot,self.secondary_shot,self.call_support,self.shield)
+        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.support],self.shoot,self.secondary_shot,self.call_support,self.shield)
         exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
         
     def shield(self):
@@ -175,9 +173,9 @@ class Level:
         if entity.hp < 1:
             dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'mega_explosion')
             random_number = randint(1,20)
-            if random_number < 8 and random_number > 4:
-                reward_option = {'1': {'name': 'power_up'}, '2': {'name': 'hp_up'}}
-                pick = randint(1,2)
+            if random_number < 10 and random_number > 4:
+                reward_option = {'1': {'name': 'power_up'}, '2': {'name': 'hp_up'}, '3': {'name': 'power_up'}}
+                pick = randint(1,3)
                 
                 reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],reward_option[str(pick)]['name'])
             entity.kill()
@@ -204,10 +202,6 @@ class Level:
                     shield.take_damage()
                     bullet.kill()
                 
-
-
-                    
-
     # ==============    
 
     def run(self):

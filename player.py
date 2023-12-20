@@ -18,10 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.call_support = call_support
         self.support_available = True
         self.support_active = False
-        self.shield_ready = True
+        self.shield_ready = False
         self.shield_active = False
         self.shield_charging = False
-        self.shield_hp = 1
+        self.shield_hp = 0
         
         
         
@@ -103,13 +103,14 @@ class Player(pygame.sprite.Sprite):
                     self.support_available = False
                     self.call_support()
                     self.support_active = True
-                    self.shield_ready = False
+                    
 
         if keys[pygame.K_a]:
             if self.shield_ready:
                 self.shield_ready = False
                 self.shield()
                 self.shield_active = True
+                
                         
     def get_status(self):
         if self.hp <= 1:
@@ -143,7 +144,7 @@ class Player(pygame.sprite.Sprite):
                 self.shield_timer -= 1.0
                 # Add 1 to shield_hp
                 self.shield_hp += 1
-            if self.shield_hp >= 20:
+            if self.shield_hp >= 10:
                 self.shield_ready = True
                 self.shield_charging = False
 
@@ -194,6 +195,7 @@ class Support(Player):
             particle.kill()
 
     def update(self,player):
+        self.hitbox.center = self.rect.center
         self.input()
         self.animate()
         self.get_status()
