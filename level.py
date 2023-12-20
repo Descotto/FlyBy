@@ -73,15 +73,15 @@ class Level:
                                 self.shield)
 
                         if style == 'cannons':
-                            cannon = Cannon((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                            cannon = Cannon((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy1':
-                            ship = Ship1((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                            ship = Ship1((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy2':
-                            ship = Ship2((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                            ship = Ship2((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy3':
-                            ship = Ship3((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                            ship = Ship3((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy4':
-                            ship = Ship4((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
+                            ship = Ship4((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
 
     def play_music(self, music_file):
         if os.path.exists(music_file):
@@ -95,7 +95,7 @@ class Level:
 
         for sprite in self.obstacle_sprites.sprites():
             if sprite.rect.colliderect(player.hitbox):
-                player.hp = 0
+                player.hp -= 5
         
     def projectile_collision(self):
         for bullet in self.projectile_sprites.sprites():
@@ -105,13 +105,12 @@ class Level:
                     bullet.kill()
 
             for entity in self.entities.sprites():
-                if entity.rect.colliderect(bullet.rect):
-                    print('hit')
+                if entity.hitbox.colliderect(bullet.hitbox):
                     entity.take_damage()
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()            
 
-    def enemy_projectile_collision(self):
+    def enemy_projectile_collision(self,player):
         for bullet in self.enemy_bullets.sprites():
             for obstacle in self.obstacle_sprites.sprites():
                 if obstacle.hitbox.colliderect(bullet.hitbox):
@@ -129,6 +128,12 @@ class Level:
                     shield.take_damage()
                     particle = Particles((bullet.hitbox.x,bullet.hitbox.y),[self.visuals],bullet.type)
                     bullet.kill()
+
+            
+            if bullet.hitbox.colliderect(player.hitbox):
+                player.take_damage()
+                particle = Particles((bullet.hitbox.x,bullet.hitbox.y),[self.visuals],bullet.type)
+                bullet.kill()
 
     def check_gameover(self):
         player = self.player.sprite
@@ -217,7 +222,7 @@ class Level:
         self.handle_reward()
         self.ui.display(player)
         self.handle_area()
-        self.enemy_projectile_collision()
+        self.enemy_projectile_collision(player)
         self.shield_collision()
         
 
@@ -258,7 +263,7 @@ class YSortCameraGroup(pygame.sprite.Group):
             if hasattr(sprite, 'hitbox'):
                 hitbox_offset_pos = sprite.hitbox.topleft - self.offset
                 hitbox_rect = pygame.Rect(hitbox_offset_pos, sprite.hitbox.size)
-                pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
+                #pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
 
         for sprite in self.shield_sprites:
             if hasattr(sprite, 'hitbox_center'):
@@ -269,7 +274,7 @@ class YSortCameraGroup(pygame.sprite.Group):
                 hitbox_rect = pygame.Rect(hitbox_offset_pos.x, hitbox_offset_pos.y, sprite.rect.size[0], sprite.rect.size[1])
 
                 # Draw the circle using the hitbox center and radius
-                pygame.draw.circle(self.display_surface, (255, 255, 255), hitbox_rect.topleft, sprite.hitbox_radius, 2)
+                #pygame.draw.circle(self.display_surface, (255, 255, 255), hitbox_rect.topleft, sprite.hitbox_radius, 2)
 
 
                 
