@@ -2,7 +2,7 @@
 import pygame, sys
 from settings import *
 from level import Level
-from gameover import GameOver
+from message_screen import *
 
 
 
@@ -11,6 +11,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 area = 3
+start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 level = Level(screen,area)
 game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT,  60, (255, 255, 255))
 image = pygame.image.load('./Assets/map_files/map_1/map_1.png')
@@ -27,10 +28,13 @@ while True:
             pygame.quit()
             sys.exit()
     screen.fill('black')
-    if not level.over:
-        level.run()
-    elif level.over:
-        game_over.run(screen)
+    if not level.started:
+        start_screen.run(screen)
+    else:
+        if not level.over:
+            level.run()
+        elif level.over:
+            game_over.run(screen)
 
     
     if level.next_lv:
@@ -44,6 +48,10 @@ while True:
     if keys[pygame.K_a]:
         if level.over:
             level = Level(screen,area)
+
+    if keys[pygame.K_f]:
+        if not level.started:
+            level.started = True
         
 
     pygame.display.update()

@@ -18,6 +18,7 @@ class Level:
         self.display_surface = surface
         self.level_setup()
         self.over = False
+        self.started = False
         # self.play_music('./Assets/midi/EnterSandman.mp3')
         self.ui = UI()
         

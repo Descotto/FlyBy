@@ -23,3 +23,14 @@ class GameOver:
         screen.fill((0, 0, 0))  # Background color (black in this case)
         for text_surface, text_rect in zip(self.text_surfaces, self.text_rects):
             screen.blit(text_surface, text_rect)
+
+class StartScreen:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.image = pygame.image.load('./Assets/backgrounds/start_screen.png').convert_alpha()
+        self.image_rect = self.image.get_rect(center=(self.width // 2, self.height // 2))
+
+    def run(self, screen):
+        screen.fill((0, 0, 0))  # Background color (black in this case)
+        screen.blit(self.image, self.image_rect)
