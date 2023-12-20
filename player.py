@@ -34,15 +34,16 @@ class Player(pygame.sprite.Sprite):
 
         # stats
         self.hp = 10
+        self.bullet_type = 'Shot7'
 
         
 
         # cooldowns
-        self.bullet_cooldown = 0.2
+        self.bullet_cooldown = 0.4
         self.last_shoot_time = 0
         self.s_cooldown = 0.5
         self.last_s_time = 0
-        self.vulnerable_cooldown = 0.9
+        self.vulnerable_cooldown = 0.2
         self.last_vulnerable = 0
         self.shield_timer = 0
         self.shield_clock = pygame.time.Clock()
@@ -78,16 +79,16 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
-            self.direction.y = -1
+            self.direction.y = -2
         elif keys[pygame.K_DOWN]:
-            self.direction.y = 1
+            self.direction.y = 2
         else:
             self.direction.y = 0
 
         if keys[pygame.K_RIGHT]:
-            self.direction.x = 2
+            self.direction.x = 3
         elif keys[pygame.K_LEFT]:
-            self.direction.x = 0.2
+            self.direction.x = -1
         else:
             self.direction.x = 1
 

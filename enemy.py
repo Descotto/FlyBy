@@ -11,14 +11,14 @@ class Enemy(pygame.sprite.Sprite):
         
         self.shoot = shoot
         self.trigger_death = trigger_death
-        self.bullet_type = 'Shot3'
+        self.bullet_type = 'Shot2'
 
         # stats
         self.hp = 2
 
         # cooldowns
         self.moving = False
-        self.bullet_cooldown = 0.7
+        self.bullet_cooldown = 2
         self.last_shoot_time = 0
         self.last_vulnerable = 0
         self.vulnerable_cooldown = 0.1
@@ -29,12 +29,12 @@ class Enemy(pygame.sprite.Sprite):
         distance = (player_vec - enemy_vec).magnitude()
         # enemy_vec.distance_to(player_vec)
         
-        if distance < 550:
+        if distance < 750:
             self.moving = False
             direction = (player_vec - enemy_vec).normalize()
             if player.rect.x < self.rect.x:
                 self.shoot(self,direction)
-        elif distance < 800 and self.moving:
+        elif distance < 1000 and self.moving:
             direction = (player_vec - enemy_vec).normalize()
             self.direction = pygame.math.Vector2(direction)
             

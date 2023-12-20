@@ -3,14 +3,14 @@ import math
 from support import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self,player_rect,group,type='Shot1'):
+    def __init__(self,player_rect,group,type='Shot7'):
         super().__init__(group)
         self.import_bullet_assets()
         self.frame_index = 0
         self.animation_speed = 0.15
         # enemies
         self.damage = 1
-        self.speed = 10
+        self.speed = 15
 
         # bullet type
         self.type = type

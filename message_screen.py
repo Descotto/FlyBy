@@ -1,5 +1,5 @@
-import pygame
-import sys
+import pygame, sys, os
+
 
 class TypingTextScreen:
     def __init__(self, width, height, text, font_size=24, color=(255, 255, 255)):
@@ -14,6 +14,15 @@ class TypingTextScreen:
         self.timer = 0
         self.text_index = 0
         self.typing_complete = False  # New attribute to track typing completion
+        self.play_music('./Assets/midi/Crazy-Train.mp3')
+
+    def play_music(self, music_file):
+        if os.path.exists(music_file):
+            pygame.mixer.music.load(music_file)
+            pygame.mixer.music.play(-1)
+            
+    def stop_music(self):
+        pygame.mixer.music.stop()
 
     def run(self, screen, delta_time):
         screen.fill((0, 0, 0))  # Background color (black in this case)
@@ -41,12 +50,6 @@ class TypingTextScreen:
         if self.text_index >= len(self.text):
             self.typing_complete = True
 
-
-
-
-
-
-
     def is_typing_complete(self):
         return self.typing_complete
 
@@ -69,6 +72,8 @@ class GameOver:
         # Calculate the rect positions for each text surface
         self.text_rects = [surface.get_rect(center=(self.width // 2, start_y + sum(surface.get_height() for surface in self.text_surfaces[:i]))) for i, surface in enumerate(self.text_surfaces)]
 
+        
+
     def run(self, screen):
         screen.fill((0, 0, 0))  # Background color (black in this case)
         for text_surface, text_rect in zip(self.text_surfaces, self.text_rects):
@@ -80,7 +85,7 @@ class StartScreen:
         self.height = height
         self.image = pygame.image.load('./Assets/backgrounds/start_screen.png').convert_alpha()
         self.image_rect = self.image.get_rect(center=(self.width // 2, self.height // 2))
-
+       
 
     def run(self, screen):
         screen.fill((0, 0, 0))  # Background color (black in this case)

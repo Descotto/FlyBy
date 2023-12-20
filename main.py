@@ -34,8 +34,6 @@ while True:
         typing_screen.run(screen, delta_time)
         pygame.display.flip()
 
-        if typing_screen.is_typing_complete():
-            break
     elif not level.started:
         if not level.start_text:
             start_screen.run(screen)
@@ -67,7 +65,9 @@ while True:
         if not level.started:
             level.started = True
             level.start_text = False
+            typing_screen.stop_music()
             del typing_screen
+            level.play_music()
         
 
     pygame.display.update()

@@ -20,7 +20,6 @@ class Level:
         self.over = False
         self.started = False
         self.start_text = False
-        # self.play_music('./Assets/midi/EnterSandman.mp3')
         self.ui = UI()
         
         
@@ -84,7 +83,8 @@ class Level:
                         if style == 'enemy4':
                             ship = Ship4((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
 
-    def play_music(self, music_file):
+    def play_music(self):
+        music_file = './Assets/midi/trooper.mp3'
         if os.path.exists(music_file):
             pygame.mixer.music.load(music_file)
             pygame.mixer.music.play(-1)
@@ -113,10 +113,7 @@ class Level:
 
     def enemy_projectile_collision(self,player):
         for bullet in self.enemy_bullets.sprites():
-            for obstacle in self.obstacle_sprites.sprites():
-                if obstacle.hitbox.colliderect(bullet.hitbox):
-                    particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
-                    bullet.kill()
+            
 
             for entity in self.support.sprites():
                 if entity.hitbox.colliderect(bullet.hitbox):
@@ -146,7 +143,7 @@ class Level:
         
         current_time = pygame.time.get_ticks()
         if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],'Shot1')
+            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],player.bullet_type)
             
             player.last_shoot_time = current_time
 
