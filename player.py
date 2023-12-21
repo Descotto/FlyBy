@@ -192,7 +192,7 @@ class Support(Player):
         # set the rect
         
     def on_death(self,particle):
-        if self.hp <= 1:
+        if self.hp <= 0:
             particle.kill()
 
     def update(self,player):

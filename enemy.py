@@ -29,12 +29,12 @@ class Enemy(pygame.sprite.Sprite):
         distance = (player_vec - enemy_vec).magnitude()
         # enemy_vec.distance_to(player_vec)
         
-        if distance < 750:
+        if distance < 650:
             self.moving = False
             direction = (player_vec - enemy_vec).normalize()
             if player.rect.x < self.rect.x:
                 self.shoot(self,direction)
-        elif distance < 1000 and self.moving:
+        elif distance < 900 and self.moving:
             direction = (player_vec - enemy_vec).normalize()
             self.direction = pygame.math.Vector2(direction)
             
