@@ -12,22 +12,19 @@ MAP_LAYOUTS = {
     'map_1': {
         'floor': import_csv_layout('./Assets/map_files/map_1/flyby_1_floor.csv'),
         'player': import_csv_layout('./Assets/map_files/map_1/flyby_1_player.csv'),
-        'cannons': import_csv_layout('./Assets/map_files/map_1/flyby_1_turrent.csv'),
+        'driver': import_csv_layout('./Assets/map_files/map_1/flyby_1_driver.csv'),
+        'cannons': import_csv_layout('./Assets/map_files/map_1/flyby_1_cannon.csv'),
         'enemy1': import_csv_layout('./Assets/map_files/map_1/flyby_1_enemy1.csv'),
-        'enemy2': import_csv_layout('./Assets/map_files/map_1/flyby_1_enemy2.csv'),
-        'enemy3': import_csv_layout('./Assets/map_files/map_1/flyby_1_enemy3.csv'),
         'enemy4': import_csv_layout('./Assets/map_files/map_1/flyby_1_enemy4.csv'),
-        'boss': import_csv_layout('./Assets/map_files/map_1/flyby_1_boss.csv'),
         'to_next': import_csv_layout('./Assets/map_files/map_1/flyby_1_to_next.csv')},
     'map_2': {
         'floor': import_csv_layout('./Assets/map_files/map_2/flyby_2_floor.csv'),
-        'cannons': import_csv_layout('./Assets/map_files/map_2/flyby_2_turrent.csv'),
+        'cannons': import_csv_layout('./Assets/map_files/map_2/flyby_2_cannon.csv'),
         'player': import_csv_layout('./Assets/map_files/map_2/flyby_2_player.csv'),
-        'enemy1': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship1.csv'),
-        'enemy2': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship2.csv'),
-        'enemy3': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship3.csv'),
-        'enemy4': import_csv_layout('./Assets/map_files/map_2/flyby_2_Ship4.csv'),
-        'boss': import_csv_layout('./Assets/map_files/map_2/flyby_2_boss.csv')},
+        'driver': import_csv_layout('./Assets/map_files/map_2/flyby_2_driver.csv'),
+        'enemy1': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy1.csv'),
+        'enemy2': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy2.csv'),
+        'enemy3': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy3.csv')},
     'map_3': {
         'player': import_csv_layout('./Assets/map_files/map_3/flyby_3_player.csv'),
         'enemy1': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy1.csv'),
@@ -38,7 +35,7 @@ MAP_LAYOUTS = {
 }}
 
 MAP_URL = {
-    'map_1': {'url': './Assets/map_files/map_1/map_1.png'},
+    'map_1': {'url': './Assets/map_files/map_1/flyby_1.png'},
     'map_2': {'url': './Assets/map_files/map_2/flyby_2.png'},
     'map_3': {'url': './Assets/map_files/map_3/flyby_3.png'}
 }

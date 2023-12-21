@@ -15,10 +15,7 @@ start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
 level = Level(screen,area)
 game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT,  60, (255, 255, 255))
-image = pygame.image.load('./Assets/map_files/map_1/map_1.png')
 
-def background_load(image):
-    screen.blit(image, (0,0))
 
 
 
