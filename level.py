@@ -107,7 +107,7 @@ class Level:
 
         for bullet in self.stun_bullets.sprites():
             if bullet.hitbox.colliderect(player.hitbox):
-                player.direction.x = pygame.math.Vector2(1,0)
+                player.take_damage(bullet.damage)
         
     def projectile_collision(self):
         for bullet in self.projectile_sprites.sprites():
@@ -187,8 +187,9 @@ class Level:
     def stun_shot(self,enemy,vector):
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
-            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.stun_shot],vector,enemy.bullet_type)
+            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.stun_bullets],vector,enemy.bullet_type)
             bullet.speed = 20
+            bullet.damage = 0.5
             enemy.last_shoot_time = current_time
 
     def trigger_death(self,entity):

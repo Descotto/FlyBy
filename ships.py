@@ -9,7 +9,7 @@ class Ship1(Enemy):
         self.image = self.flip
         self.name = 'Kazi-Vir'
         self.moving = True
-        self.speed = 5
+        self.speed = 7
         self.hp = 1
         self.bullet_type = 'Shot2'
         

@@ -133,7 +133,7 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         # enemies
         self.damage = 1
-        self.speed = 15
+        self.speed = 10
 
         self.type = type
         self.damage = 1
@@ -185,6 +185,7 @@ class Enemy_Shot(pygame.sprite.Sprite):
 class enemy_stunt_shot(Enemy_Shot):
     def __init__(self,enemy_rect,group,vector,type="Shot3"):
         super().__init__(self,enemy_rect,group,vector,type='Shot3')
+        self.speed = 20
 
     def update(self):
         self.rect.x += self.speed * self.direction.x
