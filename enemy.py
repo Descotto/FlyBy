@@ -45,8 +45,8 @@ class Enemy(pygame.sprite.Sprite):
         
         return (distance,direction)
     
-    def take_damage(self):
+    def take_damage(self,amount):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_vulnerable > self.vulnerable_cooldown * 1000:
-            self.hp -= 1
+            self.hp -= amount
             self.last_vulnerable = current_time

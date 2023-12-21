@@ -30,10 +30,12 @@ class Level:
         self.obstacle_sprites = pygame.sprite.Group()
         self.projectile_sprites = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
+        self.stun_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.support = pygame.sprite.Group()
         self.driver = pygame.sprite.GroupSingle()
         self.entities = pygame.sprite.Group()
+        self.kazis = pygame.sprite.Group()
         self.leve_up_sprites = pygame.sprite.Group()
         self.rewards = pygame.sprite.Group()
 
@@ -75,7 +77,7 @@ class Level:
                         if style == 'cannons':
                             cannon = Cannon((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy1':
-                            ship = Ship1((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                            ship = Ship1((x,y), [self.visuals,self.entities,self.kazis],self.stun_shot,self.trigger_death)
                         if style == 'enemy2':
                             ship = Ship2((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy3':
@@ -96,7 +98,16 @@ class Level:
 
         for sprite in self.obstacle_sprites.sprites():
             if sprite.rect.colliderect(player.hitbox):
-                player.hp -= 5
+                player.take_damage(5)
+
+        for sprite in self.kazis.sprites():
+            if sprite.hitbox.colliderect(player.hitbox):
+                player.take_damage(2)
+                sprite.take_damage(3)
+
+        for bullet in self.stun_bullets.sprites():
+            if bullet.hitbox.colliderect(player.hitbox):
+                player.direction.x = pygame.math.Vector2(1,0)
         
     def projectile_collision(self):
         for bullet in self.projectile_sprites.sprites():
@@ -107,7 +118,7 @@ class Level:
 
             for entity in self.entities.sprites():
                 if entity.hitbox.colliderect(bullet.hitbox):
-                    entity.take_damage()
+                    entity.take_damage(bullet.damage)
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()            
 
@@ -117,19 +128,19 @@ class Level:
 
             for entity in self.support.sprites():
                 if entity.hitbox.colliderect(bullet.hitbox):
-                    entity.take_damage()
+                    entity.take_damage(bullet.damage)
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
             for shield in self.shield_sprites.sprites():
                 if shield.hitbox.colliderect(bullet.hitbox):
-                    shield.take_damage()
+                    shield.take_damage(bullet.damage)
                     particle = Particles((bullet.hitbox.x,bullet.hitbox.y),[self.visuals],bullet.type)
                     bullet.kill()
 
             
             if bullet.hitbox.colliderect(player.hitbox):
-                player.take_damage()
+                player.take_damage(bullet.damage)
                 particle = Particles((bullet.hitbox.x,bullet.hitbox.y),[self.visuals],bullet.type)
                 bullet.kill()
 
@@ -171,6 +182,13 @@ class Level:
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
             bullet = Enemy_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type)
+            enemy.last_shoot_time = current_time
+
+    def stun_shot(self,enemy,vector):
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
+            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.stun_shot],vector,enemy.bullet_type)
+            bullet.speed = 20
             enemy.last_shoot_time = current_time
 
     def trigger_death(self,entity):

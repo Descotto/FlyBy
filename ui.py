@@ -100,6 +100,6 @@ class UI:
     def display(self,player):
         self.show_bar(player.hp,10,self.hp_bar_rect, HEALTH_COLOR)
         self.show_support_bar(player.support_available)
-        self.show_shield_bar(player.shield_active, player.shield_ready, player.shield_charging, player.shield_hp, 20, self.shield_bar_rect)
+        self.show_shield_bar(player.shield_active, player.shield_ready, player.shield_charging, player.shield_hp, 10, self.shield_bar_rect)
 
         

@@ -55,7 +55,10 @@ class Particles(pygame.sprite.Sprite):
         # loop over frame index
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
-            self.frame_index -= 1
+            if self.particle_type in ['bubble']:
+                self.frame_index -= 1
+            else:
+                self.frame_index = 0
             if self.particle_type in [
                 'Explosion1','Explosion2','Explosion3','mega_explosion',
                 'Shot1','Shot2','Shot3','Shot4','Shot5','Shot6','Shot7']:
@@ -73,13 +76,13 @@ class Particles(pygame.sprite.Sprite):
             self.rect.y += player.speed * player.direction.y
             # update the hitbox after updating the rect
             if self.particle_type == 'bubble':
-                self.hitbox = self.rect.inflate(-32,-32)
+                self.hitbox = self.rect.inflate(-22,-22)
 
             self.hitbox.center = player.rect.center
             self.hitbox_center = player.rect.center
             
-    def take_damage(self):
-        self.hp -= 1
+    def take_damage(self,amount):
+        self.hp -= amount
         if self.hp <= 0:
             self.kill()
     

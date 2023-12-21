@@ -1,5 +1,6 @@
 import pygame
 from support import *
+from settings import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -104,6 +105,13 @@ class Player(pygame.sprite.Sprite):
                     self.support_available = False
                     self.call_support()
                     self.support_active = True
+
+        # Check screen boundaries
+        
+        if self.rect.top < 0:
+            self.direction.y = 1
+        elif self.rect.bottom > SCREEN_HEIGHT:
+            self.direction.y = -1
                     
 
         if keys[pygame.K_a]:
@@ -124,10 +132,10 @@ class Player(pygame.sprite.Sprite):
         else:
             self.status = 'idle'
 
-    def take_damage(self):
+    def take_damage(self,amount):
         current_time = pygame.time.get_ticks()
         if current_time - self.last_vulnerable > self.vulnerable_cooldown * 1000:
-            self.hp -= 1
+            self.hp -= amount
             self.last_vulnerable = current_time
 
     def update_shield_hp(self):

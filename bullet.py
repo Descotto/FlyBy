@@ -133,10 +133,10 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         # enemies
         self.damage = 1
-        self.speed = 10
+        self.speed = 15
 
         self.type = type
-        self.damage = 2
+        self.damage = 1
         self.speed = 5
         self.direction = pygame.math.Vector2(vector)
        
@@ -144,6 +144,8 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.width = 5
         self.height = 5
         self.image = self.image = self.animations[self.type][self.frame_index]
+        self.flip = pygame.transform.flip(self.image, True,False)
+        self.image = self.flip
         self.rect = self.image.get_rect(topright = enemy_rect.topleft)
         if self.type == 'Shot1':
             self.hitbox = self.rect.inflate(-25,-25)
@@ -175,6 +177,16 @@ class Enemy_Shot(pygame.sprite.Sprite):
 
 
     def update(self,player):
+        self.rect.x += self.speed * self.direction.x
+        self.rect.y += self.speed * self.direction.y
+        self.hitbox.center = self.rect.midleft
+        self.animate()
+
+class enemy_stunt_shot(Enemy_Shot):
+    def __init__(self,enemy_rect,group,vector,type="Shot3"):
+        super().__init__(self,enemy_rect,group,vector,type='Shot3')
+
+    def update(self):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
         self.hitbox.center = self.rect.midleft

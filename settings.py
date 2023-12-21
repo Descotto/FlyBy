@@ -24,14 +24,17 @@ MAP_LAYOUTS = {
         'driver': import_csv_layout('./Assets/map_files/map_2/flyby_2_driver.csv'),
         'enemy1': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy1.csv'),
         'enemy2': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy2.csv'),
-        'enemy3': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy3.csv')},
+        'enemy3': import_csv_layout('./Assets/map_files/map_2/flyby_2_enemy3.csv'),
+        'to_next': import_csv_layout('./Assets/map_files/map_2/flyby_2_to_next.csv')},
     'map_3': {
         'player': import_csv_layout('./Assets/map_files/map_3/flyby_3_player.csv'),
         'enemy1': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy1.csv'),
         'enemy2': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy2.csv'),
         'enemy3': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy3.csv'),
         'enemy4': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy4.csv'),
-        'driver': import_csv_layout('./Assets/map_files/map_3/flyby_3_driver.csv')
+        'driver': import_csv_layout('./Assets/map_files/map_3/flyby_3_driver.csv'),
+        'boss_threshold': import_csv_layout('./Assets/map_files/map_3/flyby_3_boss_threshold.csv'),
+        'boss': import_csv_layout('./Assets/map_files/map_3/flyby_3_boss.csv')
 }}
 
 MAP_URL = {

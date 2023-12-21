@@ -11,6 +11,7 @@ class Tile(pygame.sprite.Sprite):
         self.image.fill((0,0,255, alpha_value))
             
         self.rect = self.image.get_rect(topleft=pos)
+        self.hitbox = self.rect
         
 
 

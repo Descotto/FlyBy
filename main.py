@@ -10,13 +10,11 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 3
+area = 1
 start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
 level = Level(screen,area)
 game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT,  60, (255, 255, 255))
-
-
 
 
 
@@ -63,7 +61,7 @@ while True:
             level.started = True
             level.start_text = False
             typing_screen.stop_music()
-            del typing_screen
+            # del typing_screen
             level.play_music()
         
 
