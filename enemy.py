@@ -1,4 +1,5 @@
 import pygame
+from settings import WEAPONS
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,pos,group,shoot,trigger_death):
@@ -11,14 +12,16 @@ class Enemy(pygame.sprite.Sprite):
         
         self.shoot = shoot
         self.trigger_death = trigger_death
-        self.bullet_type = 'Shot2'
+        self.inv = WEAPONS
+        self.weapon = self.inv['toxic']
+        self.bullet_type = self.weapon['type']
 
         # stats
         self.hp = 2
 
         # cooldowns
         self.moving = False
-        self.bullet_cooldown = 2
+        self.bullet_cooldown = self.weapon['fire_rate']
         self.last_shoot_time = 0
         self.last_vulnerable = 0
         self.vulnerable_cooldown = 0.1

@@ -93,11 +93,11 @@ START_TEXT = (
 
 # lower fire_rate int = faster shots.
 WEAPONS = {
-    'toxic': {'damage': 0.5, 'speed': 20, 'type': 'Shot1', 'fire_rate': 0.2, 'capacity': 7},
-    'stun': {'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.15, 'capacity': 5},
+    'toxic': {'damage': 0.1, 'speed': 20, 'type': 'Shot1', 'fire_rate': 0.4, 'capacity': 7},
+    'stun': {'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.9, 'capacity': 5},
     'flux': {'damage': 3, 'speed': 18, 'type': 'Shot3', 'fire_rate': 1.3, 'capacity': 3},
-    'matter': {'damage': 2, 'speed': 10, 'type': 'Shot4', 'fire_rate': 0.7, 'capacity': 4},
-    'mass': {'damage': 3, 'speed': 13, 'type': 'Shot5', 'fire_rate': 0.5, 'capacity': 2},
-    'speed': {'damage': 1, 'speed': 15, 'type': 'Shot6', 'fire_rate': 0.1, 'capacity': 5},
-    'gravity': {'damage': 1, 'speed': 15, 'type': 'Shot7', 'fire_rate': 0.4, 'capacity': 3}
+    'matter': {'damage': 2, 'speed': 10, 'type': 'Shot4', 'fire_rate': 1.2, 'capacity': 4},
+    'mass': {'damage': 3, 'speed': 13, 'type': 'Shot5', 'fire_rate': 0.8, 'capacity': 2},
+    'speed': {'damage': 1, 'speed': 15, 'type': 'Shot6', 'fire_rate': 0.6, 'capacity': 5},
+    'gravity': {'damage': 1, 'speed': 15, 'type': 'Shot7', 'fire_rate': 0.7, 'capacity': 3}
 }

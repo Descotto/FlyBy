@@ -11,7 +11,7 @@ class Ship1(Enemy):
         self.moving = True
         self.speed = 7
         self.hp = 1
-        self.bullet_type = 'Shot2'
+        self.weapon = self.inv['stun']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -57,7 +57,7 @@ class Ship2(Enemy):
         self.hp = 4
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-64,-96)
-        self.bullet_type = 'Shot4'
+        self.weapon = self.inv['matter']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -103,7 +103,7 @@ class Ship3(Enemy):
         self.speed = 5
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-64,-96)
-        self.bullet_type = 'Shot3'
+        self.weapon = self.inv['flux']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -149,7 +149,7 @@ class Ship4(Enemy):
         self.hp = 7
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
-        self.bullet_type = 'Shot6'
+        self.weapon = self.inv['speed']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -195,7 +195,7 @@ class Boss(Enemy):
         self.hp = 7
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
-        self.bullet_type = 'Shot6'
+        self.weapon = self.inv['mass']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -241,7 +241,7 @@ class Boss_Arm(Enemy):
         self.hp = 7
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
-        self.bullet_type = 'Shot6'
+        self.weapon = self.inv['mass']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
