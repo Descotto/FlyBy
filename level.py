@@ -37,6 +37,7 @@ class Level:
         self.entities = pygame.sprite.Group()
         self.kazis = pygame.sprite.Group()
         self.leve_up_sprites = pygame.sprite.Group()
+        self.threshold_sprites = pygame.sprite.Group()
         self.rewards = pygame.sprite.Group()
 
         maps = MAP_LAYOUTS[f'map_{self.area}']
@@ -73,6 +74,8 @@ class Level:
                                 self.secondary_shot,
                                 self.call_support,
                                 self.shield)
+                        if style == 'threshold':
+                            threshold = Tile((x,y), [self.threshold_sprites])
 
                         if style == 'cannons':
                             cannon = Cannon((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
@@ -84,6 +87,10 @@ class Level:
                             ship = Ship3((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy4':
                             ship = Ship4((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                        if style == 'boss':
+                            boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                        if style == 'arm':
+                            arm = Boss_Arm((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
 
     def play_music(self):
         music_file = './Assets/midi/trooper.mp3'
@@ -218,6 +225,15 @@ class Level:
             if sprite.rect.colliderect(player.hitbox):
                 self.next_lv = True
 
+    def handle_threshold(self):
+        driver = self.driver.sprite
+        player = self.player.sprite
+        for sprite in self.threshold_sprites.sprites():
+            if sprite.rect.colliderect(driver.rect):
+                driver.speed = 0
+                player.encounter = True
+
+
     def shield_collision(self):
         for bullet in self.enemy_bullets.sprites():
             for shield in self.shield_sprites.sprites():
@@ -241,6 +257,7 @@ class Level:
         self.handle_area()
         self.enemy_projectile_collision(player)
         self.shield_collision()
+        self.handle_threshold()
         
 
 

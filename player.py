@@ -23,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.shield_active = False
         self.shield_charging = False
         self.shield_hp = 0
+        self.encounter = False
         
         
         
@@ -34,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'idle'
 
         # stats
-        self.hp = 10
+        self.hp = 50
         self.bullet_type = 'Shot7'
         self.main_weapon = WEAPONS['gravity']
         self.secondary_weapon = WEAPONS['gravity']
@@ -96,7 +97,10 @@ class Player(pygame.sprite.Sprite):
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
         else:
-            self.direction.x = 1
+            if self.encounter:
+                self.direction.x = 0
+            else:
+                self.direction.x = 1
 
         if keys[pygame.K_SPACE]:
             if self.status != 'dead':
