@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
         self.status = 'idle'
 
         # stats
-        self.hp = 50
+        self.hp = 10
         self.bullet_type = 'Shot7'
         self.main_weapon = WEAPONS['gravity']
         self.secondary_weapon = WEAPONS['gravity']
@@ -170,7 +170,7 @@ class Player(pygame.sprite.Sprite):
     def update_ammo(self):
         # Check if a second has passed
         current_time = pygame.time.get_ticks()
-        if current_time - self.ammo_timer >= 0.3 * 1000:  # 1000 milliseconds = 1 second
+        if current_time - self.ammo_timer >= 0.3 * 2000:  # 1000 milliseconds = 1 second
             self.ammo_timer = current_time  # Reset the timer
 
             # Increment ammo if it's less than max_ammo
