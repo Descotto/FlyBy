@@ -9,8 +9,9 @@ class UI:
 
         # bar setup
         self.hp_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
-        self.support_bar_rect = pygame.Rect(10, 30, HEALTH_BAR_WIDTH, BAR_HEIGHT)
-        self.shield_bar_rect = pygame.Rect(10, 50, ENERGY_BAR_WIDTH, BAR_HEIGHT)
+        self.ammo_rect = pygame.Rect(10,30,HEALTH_BAR_WIDTH,BAR_HEIGHT)
+        self.support_bar_rect = pygame.Rect(10, 50, HEALTH_BAR_WIDTH, BAR_HEIGHT)
+        self.shield_bar_rect = pygame.Rect(10, 70, ENERGY_BAR_WIDTH, BAR_HEIGHT)
 
         
 
@@ -99,6 +100,7 @@ class UI:
 
     def display(self,player):
         self.show_bar(player.hp,10,self.hp_bar_rect, HEALTH_COLOR)
+        self.show_bar(player.capacity,player.main_weapon['capacity'],self.ammo_rect,AMMO_COLOR)
         self.show_support_bar(player.support_available)
         self.show_shield_bar(player.shield_active, player.shield_ready, player.shield_charging, player.shield_hp, 10, self.shield_bar_rect)
 

@@ -36,11 +36,15 @@ class Player(pygame.sprite.Sprite):
         # stats
         self.hp = 10
         self.bullet_type = 'Shot7'
+        self.main_weapon = WEAPONS['gravity']
+        self.secondary_weapon = WEAPONS['gravity']
+        self.weapons_owned = ['gravity']
+        self.capacity = self.main_weapon['capacity']
 
         
 
         # cooldowns
-        self.bullet_cooldown = 0.4
+        self.bullet_cooldown = self.main_weapon['fire_rate']
         self.last_shoot_time = 0
         self.s_cooldown = 0.5
         self.last_s_time = 0
@@ -48,6 +52,7 @@ class Player(pygame.sprite.Sprite):
         self.last_vulnerable = 0
         self.shield_timer = 0
         self.shield_clock = pygame.time.Clock()
+        self.ammo_timer = pygame.time.get_ticks()
         
 
     def import_character_assets(self):
@@ -95,7 +100,9 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_SPACE]:
             if self.status != 'dead':
-                self.shoot(self)
+                if self.capacity > 0:
+                    self.capacity -= 1
+                    self.shoot(self)
         if keys[pygame.K_x]:
             if self.status != 'dead':
                 self.s_shoot()
@@ -119,8 +126,7 @@ class Player(pygame.sprite.Sprite):
                 self.shield_ready = False
                 self.shield()
                 self.shield_active = True
-                
-                        
+                                     
     def get_status(self):
         if self.hp <= 1:
             self.status = 'dead'
@@ -157,12 +163,23 @@ class Player(pygame.sprite.Sprite):
                 self.shield_ready = True
                 self.shield_charging = False
 
+    def update_ammo(self):
+        # Check if a second has passed
+        current_time = pygame.time.get_ticks()
+        if current_time - self.ammo_timer >= 0.3 * 1000:  # 1000 milliseconds = 1 second
+            self.ammo_timer = current_time  # Reset the timer
+
+            # Increment ammo if it's less than max_ammo
+            if self.capacity < self.main_weapon['capacity']:
+                self.capacity += 1
+
     def update(self,player):
         self.hitbox.center = self.rect.center
         self.input()
         self.animate()
         self.get_status()
         self.update_shield_hp()
+        self.update_ammo()
 
 
 

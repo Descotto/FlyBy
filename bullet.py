@@ -3,14 +3,14 @@ import math
 from support import *
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self,player_rect,group,type='Shot7'):
+    def __init__(self,player_rect,group,type, bullet_damage,speed):
         super().__init__(group)
         self.import_bullet_assets()
         self.frame_index = 0
         self.animation_speed = 0.15
         # enemies
-        self.damage = 1
-        self.speed = 15
+        self.damage = bullet_damage
+        self.speed = speed
 
         # bullet type
         self.type = type
@@ -76,7 +76,7 @@ class D_Bullet(pygame.sprite.Sprite):
         self.damage = 1
         self.speed = 16
         self.gravity = 0.5
-        self.type = 'Shot4'
+        self.type = 'Shot7'
         
 
         # Set the dimensions and color of the bullet

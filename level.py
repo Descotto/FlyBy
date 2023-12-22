@@ -154,7 +154,7 @@ class Level:
         
         current_time = pygame.time.get_ticks()
         if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],player.bullet_type)
+            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],player.main_weapon['type'],player.main_weapon['damage'],player.main_weapon['speed'])
             
             player.last_shoot_time = current_time
 
