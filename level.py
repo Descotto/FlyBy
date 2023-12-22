@@ -131,8 +131,6 @@ class Level:
 
     def enemy_projectile_collision(self,player):
         for bullet in self.enemy_bullets.sprites():
-            
-
             for entity in self.support.sprites():
                 if entity.hitbox.colliderect(bullet.hitbox):
                     entity.take_damage(bullet.damage)
@@ -158,12 +156,12 @@ class Level:
 
     # PLAYER ACTIONS
     def shoot(self,player):
-        
-        current_time = pygame.time.get_ticks()
-        if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
-            bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],player.main_weapon['type'],player.main_weapon['damage'],player.main_weapon['speed'])
-            
-            player.last_shoot_time = current_time
+        if not player.charging_weapon:
+            current_time = pygame.time.get_ticks()
+            if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
+                bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],player.main_weapon['type'],player.main_weapon['damage'],player.main_weapon['speed'])
+                player.capacity -= 1
+                player.last_shoot_time = current_time
 
     def secondary_shot(self):
         player = self.player.sprite
@@ -194,7 +192,7 @@ class Level:
     def stun_shot(self,enemy,vector):
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
-            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.stun_bullets],vector,enemy.bullet_type)
+            bullet = Enemy_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type)
             bullet.speed = 20
             bullet.damage = 0.5
             enemy.last_shoot_time = current_time

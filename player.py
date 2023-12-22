@@ -24,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.shield_charging = False
         self.shield_hp = 0
         self.encounter = False
+        self.charging_weapon = False
         
         
         
@@ -104,9 +105,7 @@ class Player(pygame.sprite.Sprite):
 
         if keys[pygame.K_SPACE]:
             if self.status != 'dead':
-                if self.capacity > 0:
-                    self.capacity -= 1
-                    self.shoot(self)
+                self.shoot(self)
         if keys[pygame.K_x]:
             if self.status != 'dead':
                 self.s_shoot()
@@ -168,14 +167,22 @@ class Player(pygame.sprite.Sprite):
                 self.shield_charging = False
 
     def update_ammo(self):
-        # Check if a second has passed
-        current_time = pygame.time.get_ticks()
-        if current_time - self.ammo_timer >= 0.3 * 2000:  # 1000 milliseconds = 1 second
-            self.ammo_timer = current_time  # Reset the timer
+        if self.charging_weapon:
+            # Check if a second has passed
+            current_time = pygame.time.get_ticks()
+            if current_time - self.ammo_timer >= 3000:  # 1000 milliseconds = 1 second
+                # Increment ammo if it's less than max_ammo
+                if self.capacity <= self.main_weapon['capacity']:
+                    self.capacity += 1
+                self.ammo_timer = current_time  # Reset the timer
+        else:
+            pass
 
-            # Increment ammo if it's less than max_ammo
-            if self.capacity < self.main_weapon['capacity']:
-                self.capacity += 1
+    def track_charging(self):
+        if self.capacity <= 0:
+            self.charging_weapon = True
+        elif self.capacity >= self.main_weapon['capacity']:
+            self.charging_weapon = False
 
     def update(self,player):
         self.hitbox.center = self.rect.center
@@ -184,6 +191,7 @@ class Player(pygame.sprite.Sprite):
         self.get_status()
         self.update_shield_hp()
         self.update_ammo()
+        self.track_charging()
 
 
 
@@ -229,6 +237,7 @@ class Support(Player):
         self.input()
         self.animate()
         self.get_status()
+        self.update_ammo()
         self.direction = player.direction
         self.rect.x += player.speed * player.direction.x
         self.rect.y += player.speed * player.direction.y
