@@ -76,28 +76,34 @@ UI_FONT_SIZE = 18
 
 
 
-START_TEXT = (
-    "The year was 2030, after we destroyed the world with the \"Armaggedon War\".\n"
-    "That's when they attacked. Some think our bombs are what made them come.\n"
-    "They eliminated a quarter of the population in a week, they had no reason to fear us...\n"
-    "That was until the remaining superpowers launched an attack with everything they had left.\n"
-    "These ships were more human in their structure; we understood how they worked once we captured one.\n"
-    "We developed a gravity cannon that is powered by the ship's core.\n"
-    "We pushed even as they kept bombing our cities...\n"
-    "We pushed...\n"
-    "The year is 2077... My name is David, I am the last millennial.\n"
-    "We are ready...\n"
-    "Now it's in your hands... fly Pilot.\n"
-    "Press Enter"
-)
-
+# START_TEXT = (
+#     "The year was 2030, after we destroyed the world with the \"Armaggedon War\".\n"
+#     "That's when they attacked. Some think our bombs are what made them come.\n"
+#     "They eliminated a quarter of the population in a week, they had no reason to fear us...\n"
+#     "That was until the remaining superpowers launched an attack with everything they had left.\n"
+#     "These ships were more human in their structure; we understood how they worked once we captured one.\n"
+#     "We developed a gravity cannon that is powered by the ship's core.\n"
+#     "We pushed even as they kept bombing our cities...\n"
+#     "We pushed...\n"
+#     "The year is 2077... My name is David, I am the last millennial.\n"
+#     "We are ready...\n"
+#     "Now it's in your hands... fly Pilot.\n"
+#     "Press Enter"
+# )
+START_TEXT = ("Arrows = Movement.\n"
+              "Press SPACE to Fire\n"
+              "Press S to call your support crew\n"
+              "Press A to deploy your shields\n"
+              "Press 1 to circle through weapons.\n"
+              "Press Z to salvage and adquire new weapons.\n"
+              "Press ENTER to start.")
 # lower fire_rate int = faster shots.
 WEAPONS = {
-    'toxic': {'damage': 0.1, 'speed': 20, 'type': 'Shot1', 'fire_rate': 0.4, 'capacity': 7},
-    'stun': {'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.9, 'capacity': 5},
-    'flux': {'damage': 3, 'speed': 18, 'type': 'Shot3', 'fire_rate': 1.3, 'capacity': 3},
-    'matter': {'damage': 2, 'speed': 10, 'type': 'Shot4', 'fire_rate': 1.2, 'capacity': 4},
-    'mass': {'damage': 3, 'speed': 13, 'type': 'Shot5', 'fire_rate': 0.8, 'capacity': 2},
-    'speed': {'damage': 1, 'speed': 15, 'type': 'Shot6', 'fire_rate': 0.6, 'capacity': 5},
-    'gravity': {'damage': 1, 'speed': 15, 'type': 'Shot7', 'fire_rate': 0.7, 'capacity': 3}
+    'toxic': {'damage': 0.1, 'speed': 20, 'type': 'Shot1', 'fire_rate': 0.6, 'capacity': 7, 'pic': './Assets/particles/Shot1/shot1_exp2.png'},
+    'stun': {'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.9, 'capacity': 5, 'pic': './Assets/particles/Shot2/shot2_exp3.png'},
+    'flux': {'damage': 3, 'speed': 18, 'type': 'Shot3', 'fire_rate': 1.3, 'capacity': 3, 'pic': './Assets/particles/Shot3/shot3_exp2.png'},
+    'matter': {'damage': 2, 'speed': 10, 'type': 'Shot4', 'fire_rate': 1.2, 'capacity': 4, 'pic': './Assets/particles/Shot4/shot4_exp3.png'},
+    'mass': {'damage': 5, 'speed': 13, 'type': 'Shot5', 'fire_rate': 0.8, 'capacity': 2, 'pic': './Assets/particles/Shot5/shot5_exp5.png'},
+    'speed': {'damage': 1, 'speed': 30, 'type': 'Shot6', 'fire_rate': 0.4, 'capacity': 7, 'pic': './Assets/particles/Shot6/shot6_exp1.png'},
+    'gravity': {'damage': 1, 'speed': 15, 'type': 'Shot7', 'fire_rate': 0.7, 'capacity': 3, 'pic': './Assets/particles/Shot7/07.png'}
 }

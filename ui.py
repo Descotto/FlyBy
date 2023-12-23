@@ -13,7 +13,12 @@ class UI:
         self.support_bar_rect = pygame.Rect(10, 50, HEALTH_BAR_WIDTH, BAR_HEIGHT)
         self.shield_bar_rect = pygame.Rect(10, 70, ENERGY_BAR_WIDTH, BAR_HEIGHT)
 
-        
+        # convert weapon dictionary
+        self.weapon_graphics = []
+        for weapon in WEAPONS.values():
+            path = weapon['pic']
+            weapon = pygame.image.load(path).convert_alpha()
+            self.weapon_graphics.append(weapon)
 
 
     def show_bar(self, current, max_amount,bg_rect,color):

@@ -6,7 +6,7 @@ from settings import *
 class Player(pygame.sprite.Sprite):
     def __init__(self,pos,group,shoot,s_shot,call_support,shield):
         super().__init__(group)
-
+        # setup
         self.import_character_assets()
         self.frame_index = 0
         self.animation_speed = 0.15
@@ -37,12 +37,17 @@ class Player(pygame.sprite.Sprite):
 
         # stats
         self.hp = 10
-        self.bullet_type = 'Shot7'
-        self.main_weapon = WEAPONS['gravity']
-        self.secondary_weapon = WEAPONS['gravity']
         self.weapons_owned = ['gravity']
+        self.track_equipped = 0
+        self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
+        self.secondary_weapon = WEAPONS['gravity']
         self.capacity = self.main_weapon['capacity']
+        self.bullet_type = self.main_weapon['type']
 
+        # progress
+        self.level = 0
+        self.salvage = 0
+        self.wepaon_vault = ['gravity','toxic','speed','matter','mass','flux']
         
 
         # cooldowns
@@ -55,6 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.shield_timer = 0
         self.shield_clock = pygame.time.Clock()
         self.ammo_timer = pygame.time.get_ticks()
+        self.switch_timer = pygame.time.get_ticks()
         
 
     def import_character_assets(self):
@@ -84,7 +90,11 @@ class Player(pygame.sprite.Sprite):
         # set the rect
         
     def input(self):
+        pygame.joystick.init()
+        # Get the number of available joysticks
+        
         keys = pygame.key.get_pressed()
+        
 
         if keys[pygame.K_UP]:
             self.direction.y = -2
@@ -129,6 +139,23 @@ class Player(pygame.sprite.Sprite):
                 self.shield_ready = False
                 self.shield()
                 self.shield_active = True
+        if keys[pygame.K_o]:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.switch_timer >= 1500:
+                if self.track_equipped + 1 < len(self.weapons_owned):
+                    self.track_equipped += 1
+                    self.switch_weapon()
+                else:
+                    self.track_equipped = 0
+                    self.switch_weapon()  # Call a method to handle weapon switching
+                self.switch_timer = current_time
+            else:
+                self.switch_timer = current_time
+
+        if keys[pygame.K_z]:
+            if self.salvage >= 100:
+                self.handle_salvage()
+
                                      
     def get_status(self):
         if self.hp <= 1:
@@ -179,10 +206,19 @@ class Player(pygame.sprite.Sprite):
             pass
 
     def track_charging(self):
-        if self.capacity <= 0:
+        if self.capacity < self.main_weapon['capacity']:
             self.charging_weapon = True
         elif self.capacity >= self.main_weapon['capacity']:
             self.charging_weapon = False
+
+    def switch_weapon(self):
+        self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
+
+    def handle_salvage(self):
+        if self.salvage >= 100:
+            self.salvage = 0
+            self.level += 1
+            self.weapons_owned.extend(self.wepaon_vault[self.level:])
 
     def update(self,player):
         self.hitbox.center = self.rect.center

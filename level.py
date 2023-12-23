@@ -201,9 +201,18 @@ class Level:
         if entity.hp < 1:
             dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'mega_explosion')
             random_number = randint(1,20)
-            if random_number < 10 and random_number > 4:
-                reward_option = {'1': {'name': 'power_up'}, '2': {'name': 'hp_up'}, '3': {'name': 'power_up'}}
-                pick = randint(1,3)
+            if random_number < 10 and random_number > 3:
+                reward_option = {'1': {'name': 'heal_up'},
+                                 '2': {'name': 'hp_up'},
+                                 '3': {'name': 'power_up'},
+                                 '4': {'name': 'power_up'},
+                                 '5': {'name': 'salavage'},
+                                 '6': {'name': 'salavage'},
+                                 '7': {'name': 'salavage'},
+                                 '8': {'name': 'salavage'},
+                                 '9': {'name': 'salavage'},}
+
+                pick = randint(1,9)
                 
                 reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],reward_option[str(pick)]['name'])
             entity.kill()

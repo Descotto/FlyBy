@@ -63,7 +63,7 @@ while True:
             level.start_text = False
             typing_screen.stop_music()
             # del typing_screen
-            # level.play_music()
+            level.play_music()
         
 
     pygame.display.update()
