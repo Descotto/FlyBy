@@ -21,6 +21,31 @@ class UI:
             self.weapon_graphics.append(weapon)
 
 
+
+    def show_salvage(self,salvage):
+        text_surf = self.font.render(str(int(salvage)),False,TEXT_COLOR)
+        x = self.display_surface.get_size()[0] - 20
+        y = self.display_surface.get_size()[1] - 20
+        text_rect = text_surf.get_rect(bottomright = (x,y))
+
+        pygame.draw.rect(self.display_surface,UI_BG_COLOR,text_rect.inflate(20,20))
+        self.display_surface.blit(text_surf,text_rect)
+        pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,text_rect.inflate(20,20),3)
+
+
+    def selection_box(self,left,top):
+        bg_rect = pygame.Rect(left,top,ITEM_BOX_SIZE,ITEM_BOX_SIZE)
+        pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect)
+        pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,bg_rect,3)
+        return bg_rect
+    
+    def weapon_overlay(self,weapon_index):
+        bg_rect = self.selection_box(10,603)
+        weapon_surf = self.weapon_graphics[weapon_index]
+        weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
+        
+        self.display_surface.blit(weapon_surf,weapon_rect)
+
     def show_bar(self, current, max_amount,bg_rect,color):
         # draw bg
         pygame.draw.rect(self.display_surface,UI_BG_COLOR,bg_rect)
@@ -108,5 +133,5 @@ class UI:
         self.show_bar(player.capacity,player.main_weapon['capacity'],self.ammo_rect,AMMO_COLOR)
         self.show_support_bar(player.support_available)
         self.show_shield_bar(player.shield_active, player.shield_ready, player.shield_charging, player.shield_hp, 10, self.shield_bar_rect)
-
-        
+        self.weapon_overlay(player.main_weapon['key'])
+        self.show_salvage(player.salvage)

@@ -156,7 +156,7 @@ class Level:
 
     # PLAYER ACTIONS
     def shoot(self,player):
-        if not player.charging_weapon:
+        if not player.critical_charge:
             current_time = pygame.time.get_ticks()
             if current_time - player.last_shoot_time > player.bullet_cooldown * 1000:
                 bullet = Bullet(player.rect,[self.visuals,self.projectile_sprites],player.main_weapon['type'],player.main_weapon['damage'],player.main_weapon['speed'])
@@ -206,11 +206,11 @@ class Level:
                                  '2': {'name': 'hp_up'},
                                  '3': {'name': 'power_up'},
                                  '4': {'name': 'power_up'},
-                                 '5': {'name': 'salavage'},
-                                 '6': {'name': 'salavage'},
-                                 '7': {'name': 'salavage'},
-                                 '8': {'name': 'salavage'},
-                                 '9': {'name': 'salavage'},}
+                                 '5': {'name': 'salvage'},
+                                 '6': {'name': 'salvage'},
+                                 '7': {'name': 'salvage'},
+                                 '8': {'name': 'salvage'},
+                                 '9': {'name': 'salvage'},}
 
                 pick = randint(1,9)
                 

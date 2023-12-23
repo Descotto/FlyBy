@@ -25,6 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.shield_hp = 0
         self.encounter = False
         self.charging_weapon = False
+        self.critical_charge = False
         
         
         
@@ -37,7 +38,7 @@ class Player(pygame.sprite.Sprite):
 
         # stats
         self.hp = 10
-        self.weapons_owned = ['gravity']
+        self.weapons_owned = ['gravity','toxic']
         self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
         self.secondary_weapon = WEAPONS['gravity']
@@ -208,8 +209,11 @@ class Player(pygame.sprite.Sprite):
     def track_charging(self):
         if self.capacity < self.main_weapon['capacity']:
             self.charging_weapon = True
+            if self.capacity <= 0:
+                self.critical_charge = True
         elif self.capacity >= self.main_weapon['capacity']:
             self.charging_weapon = False
+            self.critical_charge = False
 
     def switch_weapon(self):
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
