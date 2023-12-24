@@ -200,9 +200,8 @@ class Level:
     def trigger_death(self,entity):
         if entity.hp < 1:
             dead = Particles((entity.rect.x,entity.rect.y),[self.visuals],'mega_explosion')
-            random_number = randint(1,20)
-            if random_number < 10 and random_number > 3:
-                reward_option = {'1': {'name': 'heal_up'},
+            random_number = randint(1,10)
+            reward_option = {'1': {'name': 'hp_up'},
                                  '2': {'name': 'hp_up'},
                                  '3': {'name': 'power_up'},
                                  '4': {'name': 'power_up'},
@@ -211,6 +210,8 @@ class Level:
                                  '7': {'name': 'salvage'},
                                  '8': {'name': 'salvage'},
                                  '9': {'name': 'salvage'},}
+            if random_number < 10 and random_number > 3:
+                
 
                 pick = randint(1,9)
                 

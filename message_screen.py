@@ -90,3 +90,24 @@ class StartScreen:
     def run(self, screen):
         screen.fill((0, 0, 0))  # Background color (black in this case)
         screen.blit(self.image, self.image_rect)
+
+
+
+class PauseScreen:
+    def __init__(self, screen_width, screen_height, overlay_alpha=3):
+        self.screen_width = screen_width
+        self.screen_height = screen_height
+        self.overlay_alpha = overlay_alpha  # Set the desired alpha value for transparency
+        self.overlay_color = (0, 0, 0, self.overlay_alpha)  # Add alpha to the color for transparency
+
+        self.paused_text = pygame.font.SysFont("Arial", 60).render("PAUSED", True, (255, 255, 255))
+
+    def display(self, screen):
+        # Dim the screen with a semi-transparent overlay
+        overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
+        overlay.fill(self.overlay_color)
+        screen.blit(overlay, (0, 0))
+
+        # Display the "PAUSED" text at the center of the screen
+        text_rect = self.paused_text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+        screen.blit(self.paused_text, text_rect)
