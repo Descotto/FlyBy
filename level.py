@@ -91,9 +91,9 @@ class Level:
                         if style == 'enemy4':
                             ship = Ship4((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
                         if style == 'boss':
-                            boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
-                        if style == 'arm':
-                            arm = Boss_Arm((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death,boss)
+                            boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.boss_shot,self.trigger_death)
+                            arm = Boss_Arm((boss.rect.x - 96,boss.rect.y + 70),[self.visuals,self.entities],self.enemy_shoot,self.trigger_death,boss,BOSS_ARM_UP_URL)
+                            arm2 = Boss_Arm((boss.rect.x - 96,boss.rect.y + 126),[self.visuals,self.entities],self.enemy_shoot,self.trigger_death,boss,BOSS_ARM_DOWN_URL)
 
     def play_music(self):
         music_file = './Assets/midi/trooper.mp3'
@@ -118,9 +118,7 @@ class Level:
         for bullet in self.stun_bullets.sprites():
             if bullet.hitbox.colliderect(player.hitbox):
                 player.take_damage(bullet.damage)
-
-        
-        
+      
     def projectile_collision(self):
         for bullet in self.projectile_sprites.sprites():
             for obstacle in self.obstacle_sprites.sprites():
@@ -139,12 +137,11 @@ class Level:
                 if entity.hitbox.colliderect(missile.hitbox):
                     entity.take_damage(missile.damage)
                     print('hit')
-                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    particle = Particles((missile.rect.x,missile.rect.y),[self.visuals],missile.type)
                     missile.kill()   
 
             for obstacle in self.obstacle_sprites.sprites():
                 if obstacle.rect.colliderect(missile.hitbox):
-                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     missile.on_ground = True
                     missile.rect.y = obstacle.rect.y - 20
 
@@ -205,7 +202,6 @@ class Level:
         backup2 = Backup((player.rect.x - 10,player.rect.y - 15),[self.visuals],self.shoot,self.secondary_shot,self.call_support,self.call_backup,self.shield)
         #exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
 
-
     def shield(self):
         player = self.player.sprite
         shield = Particles((player.rect.centerx,player.rect.centery),[self.shield_sprites,self.visuals], 'bubble')
@@ -215,6 +211,13 @@ class Level:
         current_time = pygame.time.get_ticks()
         if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
             bullet = Enemy_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type)
+            enemy.last_shoot_time = current_time
+
+    def boss_shot(self,enemy,vector):
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy.last_shoot_time > enemy.bullet_cooldown * 1000:
+            bullet = Boss_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type,enemy.rect.topleft)
+            bullet2 = Boss_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type,enemy.rect.bottomleft)
             enemy.last_shoot_time = current_time
 
     def stun_shot(self,enemy,vector):
@@ -273,7 +276,6 @@ class Level:
             if sprite.rect.colliderect(driver.rect):
                 driver.speed = 0
                 player.encounter = True
-
 
     def shield_collision(self):
         for bullet in self.enemy_bullets.sprites():
@@ -338,7 +340,7 @@ class YSortCameraGroup(pygame.sprite.Group):
             if hasattr(sprite, 'hitbox'):
                 hitbox_offset_pos = sprite.hitbox.topleft - self.offset
                 hitbox_rect = pygame.Rect(hitbox_offset_pos, sprite.hitbox.size)
-                #pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
+                pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
 
         for sprite in self.shield_sprites:
             if hasattr(sprite, 'hitbox_center'):

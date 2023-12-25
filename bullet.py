@@ -150,21 +150,24 @@ class Enemy_Shot(pygame.sprite.Sprite):
         self.width = 5
         self.height = 5
         self.image = self.image = self.animations[self.type][self.frame_index]
-        self.flip = pygame.transform.flip(self.image, True,False)
-        self.image = self.flip
+        
+        
         self.rect = self.image.get_rect(topright = enemy_rect.topleft)
+        
         if self.type == 'Shot1':
             self.hitbox = self.rect.inflate(-25,-25)
         elif self.type in ['Shot5','Shot6']:
             self.hitbox = self.rect.inflate(-120,-120)
         elif self.type == 'Shot7':
             self.hitbox = self.rect.inflate(-16,-16)
+        elif self.type == 'boss_shot':
+            self.hitbox = self.rect.inflate(-50,0)
         else:
             self.hitbox = self.rect.inflate(-52,-52)
-
+        
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
-        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[],'Shot7': []}
+        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[],'Shot7': [], 'boss_shot': []}
 
         for animation in self.animations.keys():
             full_path = bullet_path + animation
@@ -180,7 +183,8 @@ class Enemy_Shot(pygame.sprite.Sprite):
             
         image = animation[int(self.frame_index)]
         self.image = image
-
+        self.flip = pygame.transform.flip(self.image, True,False)
+        self.image = self.flip
 
     def update(self,player):
         self.rect.x += self.speed * self.direction.x
@@ -194,6 +198,17 @@ class enemy_stunt_shot(Enemy_Shot):
         self.speed = 20
 
     def update(self):
+        self.rect.x += self.speed * self.direction.x
+        self.rect.y += self.speed * self.direction.y
+        self.hitbox.center = self.rect.midleft
+        self.animate()
+
+class Boss_Shot(Enemy_Shot):
+    def __init__(self,enemy_rect,group,vector,type,pos):
+        super().__init__(enemy_rect,group,vector,type)
+        self.rect = self.image.get_rect(center = pos)
+
+    def update(self,player):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
         self.hitbox.center = self.rect.midleft

@@ -9,6 +9,10 @@ class Particles(pygame.sprite.Sprite):
         self.animation_speed = 0.15
         self.extra = extra
         self.particle_type = particle_type
+        if particle_type == 'missile':
+            self.particle_type = 'Explosion1'
+        if particle_type == 'boss_shot':
+            self.particle_type = 'mega_explosion'
         self.image = self.animations[self.particle_type][self.frame_index]
         if self.particle_type == 'bubble':
             self.hp = 10
