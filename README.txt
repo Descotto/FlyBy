@@ -11,7 +11,7 @@ Z = Use Salvage (on at 100)
 REWARDS:
 
 Salvage:
-![Salvage](./Assets/power_ups/salvage/1.png) 
+![Salvage](Assets/power_ups/salvage/1.png) 
 Collect Salvage to make new weapons, once you have 100 press Z and get a new weapon.
 
 Support:
