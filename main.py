@@ -10,7 +10,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 1
+area = 2
 start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
 level = Level(screen, area)
@@ -18,6 +18,7 @@ game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT, 60, (255, 255, 255))
 pause_screen = PauseScreen(SCREEN_WIDTH, SCREEN_HEIGHT)  
 
 paused = False 
+show_fullscreen_image = False
 pause_timer = 0
 pause_cooldown = 1000 
 
@@ -65,7 +66,12 @@ while True:
                 # del typing_screen
                 level.play_music()
 
-    
+    if keys[pygame.K_c] and paused and current_time - pause_timer >= pause_cooldown:
+        show_fullscreen_image = not show_fullscreen_image  # Toggle the flag
+        pause_timer = current_time
+    if paused:
+        pause_screen.display(screen, show_fullscreen_image)
+
     if keys[pygame.K_p] and current_time - pause_timer >= pause_cooldown:
         paused = not paused
         pause_timer = current_time  

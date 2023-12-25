@@ -97,17 +97,31 @@ class PauseScreen:
     def __init__(self, screen_width, screen_height, overlay_alpha=3):
         self.screen_width = screen_width
         self.screen_height = screen_height
-        self.overlay_alpha = overlay_alpha  # Set the desired alpha value for transparency
+        self.overlay_alpha = overlay_alpha
         self.overlay_color = (0, 0, 0, self.overlay_alpha)  # Add alpha to the color for transparency
 
         self.paused_text = pygame.font.SysFont("Arial", 60).render("PAUSED", True, (255, 255, 255))
+        self.fullscreen_image = pygame.image.load('./Assets/backgrounds/index.jpg')  # Add the path to your image
+        self.fullscreen_image = pygame.transform.scale(self.fullscreen_image, (self.screen_width, self.screen_height))
+        self.additional_text = pygame.font.SysFont("Arial", 30).render("Press C for index.", True, (255, 255, 255))
 
-    def display(self, screen):
+    def display(self, screen, show_fullscreen_image=False):
         # Dim the screen with a semi-transparent overlay
         overlay = pygame.Surface((self.screen_width, self.screen_height), pygame.SRCALPHA)
         overlay.fill(self.overlay_color)
         screen.blit(overlay, (0, 0))
 
+        # Display additional text during the fading process
+        additional_text_rect = self.additional_text.get_rect(center=(self.screen_width // 2, self.screen_height // 4))
+        screen.blit(self.additional_text, additional_text_rect)
+
         # Display the "PAUSED" text at the center of the screen
         text_rect = self.paused_text.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
         screen.blit(self.paused_text, text_rect)
+
+        # Check if the full-screen image should be displayed
+        if show_fullscreen_image:
+            # Display the resized full-screen image
+            image_rect = self.fullscreen_image.get_rect(center=(self.screen_width // 2, self.screen_height // 2))
+            screen.blit(self.fullscreen_image, image_rect)
+
