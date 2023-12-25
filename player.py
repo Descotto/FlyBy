@@ -126,7 +126,6 @@ class Player(pygame.sprite.Sprite):
                 if self.support_available:
                     self.support_available = False
                     self.call_support()
-                    self.call_backup()
                     self.support_active = True
 
         # Check screen boundaries
@@ -235,8 +234,6 @@ class Player(pygame.sprite.Sprite):
         self.update_ammo()
         self.track_charging()
 
-
-
 class Support(Player):
     def __init__(self,pos,group,shoot,s_shot,call_support,call_backup,shield):
         super().__init__(pos,group,shoot,s_shot,call_support,call_backup,shield)
@@ -327,6 +324,8 @@ class Backup(Player):
         if current_time - self.last_decay > self.decay_cooldown * 1000:
             self.hp -= 0.5
             self.last_decay = current_time
+        if self.hp <= 0:
+            self.kill()
 
     def update(self,player):
         self.hitbox.center = self.rect.center
@@ -337,7 +336,6 @@ class Backup(Player):
         self.direction = player.direction
         self.rect.x += player.speed * player.direction.x
         self.rect.y += player.speed * player.direction.y
-
 
 class Driver(Player):
     def __init__(self,pos,group,shoot,s_shot,call_support,call_backup,shield):

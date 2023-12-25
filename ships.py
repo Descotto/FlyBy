@@ -105,6 +105,7 @@ class Ship3(Enemy):
         self.image = self.flip
         self.moving = True
         self.speed = 5
+        self.hp = 4
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-64,-96)
         self.weapon = self.inv['flux']
@@ -151,8 +152,8 @@ class Ship4(Enemy):
         self.flip = pygame.transform.flip(self.image, True,False)
         self.image = self.flip
         self.moving = True
-        self.speed = 2
-        self.hp = 7
+        self.speed = 3
+        self.hp = 6
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
         self.weapon = self.inv['speed']
@@ -213,7 +214,7 @@ class Boss(Enemy):
         distance = (player_vec - enemy_vec).magnitude()
         # enemy_vec.distance_to(player_vec)
         
-        if distance < 150:
+        if distance < 350:
             self.moving = True
             direction = (player_vec - enemy_vec).normalize()
             self.direction = pygame.math.Vector2(1,0)
@@ -241,13 +242,14 @@ class Boss(Enemy):
         
 
 class Boss_Arm(Enemy):
-    def __init__(self,pos,group,shoot,trigger_death):
+    def __init__(self,pos,group,shoot,trigger_death,boss):
         super().__init__(pos,group,shoot,trigger_death)
         self.image = pygame.image.load('./Assets/enemies/boss/boss_arm3.png').convert_alpha()
         self.flip = pygame.transform.flip(self.image, True,False)
         self.image = self.flip
+        self.boss = boss
         self.moving = True
-        self.speed = 2
+        self.speed = self.boss.speed
         self.hp = 7
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
@@ -264,7 +266,7 @@ class Boss_Arm(Enemy):
         if distance < 150:
             self.moving = True
             direction = (player_vec - enemy_vec).normalize()
-            self.direction = pygame.math.Vector2(1,0)
+            
         elif distance < 900 and self.moving:
             direction = (player_vec - enemy_vec).normalize()
             if player.rect.x < self.rect.x:
@@ -273,7 +275,7 @@ class Boss_Arm(Enemy):
         else:
             
             direction = pygame.math.Vector2(-1,0)
-            self.direction = pygame.math.Vector2(0,0)
+            
         
         return (distance,direction)
     
@@ -281,6 +283,7 @@ class Boss_Arm(Enemy):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
         self.hitbox.center = self.rect.center
+        self.direction = self.boss.direction
         self.get_player_distance_direction(player)
         self.trigger_death(self)
 

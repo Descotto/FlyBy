@@ -93,7 +93,7 @@ class Level:
                         if style == 'boss':
                             boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'arm':
-                            arm = Boss_Arm((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                            arm = Boss_Arm((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death,boss)
 
     def play_music(self):
         music_file = './Assets/midi/trooper.mp3'

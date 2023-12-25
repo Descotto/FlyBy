@@ -10,7 +10,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 2
+area = 1
 start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
 level = Level(screen, area)
@@ -54,11 +54,11 @@ while True:
                 level = Level(screen, area)
 
         if keys[pygame.K_f]:
-            if not level.start_text:
+            if not level.start_text and not level.started:
                 level.start_text = True
 
         if keys[pygame.K_RETURN]:
-            if not level.started:
+            if not level.started and level.start_text:
                 level.started = True
                 level.start_text = False
                 typing_screen.stop_music()
