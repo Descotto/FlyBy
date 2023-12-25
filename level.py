@@ -347,7 +347,7 @@ class YSortCameraGroup(pygame.sprite.Group):
             if hasattr(sprite, 'hitbox'):
                 hitbox_offset_pos = sprite.hitbox.topleft - self.offset
                 hitbox_rect = pygame.Rect(hitbox_offset_pos, sprite.hitbox.size)
-                pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
+                #pygame.draw.rect(self.display_surface, (255, 255, 255), hitbox_rect, 2)
 
         for sprite in self.shield_sprites:
             if hasattr(sprite, 'hitbox_center'):
