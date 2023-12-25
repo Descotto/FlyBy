@@ -194,11 +194,12 @@ class Ship4(Enemy):
         
 
 class Boss(Enemy):
-    def __init__(self,pos,group,shoot,trigger_death):
+    def __init__(self,pos,group,shoot,trigger_death,support):
         super().__init__(pos,group,shoot,trigger_death)
         self.image = pygame.image.load('./Assets/enemies/boss/boss_body.png').convert_alpha()
         self.flip = pygame.transform.flip(self.image, True,False)
         self.image = self.flip
+        self.support = support
         self.moving = True
         self.speed = 2
         self.hp = 7
@@ -207,6 +208,8 @@ class Boss(Enemy):
         self.weapon = self.inv['boss_shot']
         self.bullet_type = self.weapon['type']
         self.bullet_cooldown = self.weapon['fire_rate']
+        self.call_support_cooldown = 10
+        self.call_support_timer = 0
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -222,6 +225,8 @@ class Boss(Enemy):
             direction = pygame.math.Vector2(-2,0)
             if player.rect.x < self.rect.x:
                 self.shoot(self,direction)
+                
+                self.support(self)
             
         else:
             

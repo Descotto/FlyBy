@@ -91,7 +91,7 @@ class Level:
                         if style == 'enemy4':
                             ship = Ship4((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
                         if style == 'boss':
-                            boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.boss_shot,self.trigger_death)
+                            boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.boss_shot,self.trigger_death,self.boss_support)
                             arm = Boss_Arm((boss.rect.x - 96,boss.rect.y + 70),[self.visuals,self.entities],self.enemy_shoot,self.trigger_death,boss,BOSS_ARM_UP_URL)
                             arm2 = Boss_Arm((boss.rect.x - 96,boss.rect.y + 126),[self.visuals,self.entities],self.enemy_shoot,self.trigger_death,boss,BOSS_ARM_DOWN_URL)
 
@@ -219,6 +219,13 @@ class Level:
             bullet = Boss_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type,enemy.rect.topleft)
             bullet2 = Boss_Shot(enemy.rect,[self.visuals,self.enemy_bullets],vector,enemy.bullet_type,enemy.rect.bottomleft)
             enemy.last_shoot_time = current_time
+
+    def boss_support(self,boss):
+        current_time = pygame.time.get_ticks()
+        if current_time - boss.call_support_timer  > boss.call_support_cooldown * 1000:
+            ship1 = Ship1((boss.rect.x,boss.rect.y - 80), [self.visuals,self.entities,self.kazis],self.stun_shot,self.trigger_death)
+            ship2 = Ship1((boss.rect.x,boss.rect.y + 310), [self.visuals,self.entities,self.kazis],self.stun_shot,self.trigger_death)
+            boss.call_support_timer = current_time
 
     def stun_shot(self,enemy,vector):
         current_time = pygame.time.get_ticks()

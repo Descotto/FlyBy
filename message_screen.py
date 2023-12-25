@@ -101,7 +101,7 @@ class PauseScreen:
         self.overlay_color = (0, 0, 0, self.overlay_alpha)  # Add alpha to the color for transparency
 
         self.paused_text = pygame.font.SysFont("Arial", 60).render("PAUSED", True, (255, 255, 255))
-        self.fullscreen_image = pygame.image.load('./Assets/backgrounds/index.jpg')  # Add the path to your image
+        self.fullscreen_image = pygame.image.load('./Assets/backgrounds/index.jpeg')  # Add the path to your image
         self.fullscreen_image = pygame.transform.scale(self.fullscreen_image, (self.screen_width, self.screen_height))
         self.additional_text = pygame.font.SysFont("Arial", 30).render("Press C for index.", True, (255, 255, 255))
 
