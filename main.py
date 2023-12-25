@@ -10,7 +10,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 4
+area = 1
 start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
 level = Level(screen, area)
