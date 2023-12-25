@@ -92,10 +92,12 @@ UI_FONT_SIZE = 18
 # )
 START_TEXT = ("Arrows = Movement.\n"
               "Press SPACE to Fire\n"
+              "Press X for Missiles.\n"
               "Press S to call your support crew\n"
               "Press A to deploy your shields\n"
               "Press 1 to circle through weapons.\n"
               "Press Z to salvage and adquire new weapons.\n"
+              "Press P for Pause.\n"
               "Press ENTER to start.")
 # lower fire_rate int = faster shots.
 WEAPONS = {

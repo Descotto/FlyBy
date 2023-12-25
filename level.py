@@ -81,15 +81,15 @@ class Level:
                             threshold = Tile((x,y), [self.threshold_sprites])
 
                         if style == 'cannons':
-                            cannon = Cannon((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                            cannon = Cannon((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy1':
                             ship = Ship1((x,y), [self.visuals,self.entities,self.kazis],self.stun_shot,self.trigger_death)
                         if style == 'enemy2':
-                            ship = Ship2((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                            ship = Ship2((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy3':
-                            ship = Ship3((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                            ship = Ship3((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
                         if style == 'enemy4':
-                            ship = Ship4((x,y), [self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
+                            ship = Ship4((x,y), [self.visuals,self.entities],self.enemy_shoot,self.trigger_death)
                         if style == 'boss':
                             boss = Boss((x,y),[self.visuals,self.entities,self.obstacle_sprites],self.enemy_shoot,self.trigger_death)
                         if style == 'arm':
@@ -138,6 +138,7 @@ class Level:
             for entity in self.entities.sprites():
                 if entity.hitbox.colliderect(missile.hitbox):
                     entity.take_damage(missile.damage)
+                    print('hit')
                     #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     missile.kill()   
 
@@ -145,7 +146,7 @@ class Level:
                 if obstacle.rect.colliderect(missile.hitbox):
                     #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     missile.on_ground = True
-                    missile.rect.bottom = obstacle.rect.top
+                    missile.rect.y = obstacle.rect.y - 20
 
     def enemy_projectile_collision(self,player):
         for bullet in self.enemy_bullets.sprites():

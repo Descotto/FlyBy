@@ -9,7 +9,7 @@ class Cannon(Enemy):
         self.flip = pygame.transform.flip(self.image, True,False)
         self.image = self.flip
         self.rect = self.image.get_rect(topleft = pos)
-        self.hitbox = self.rect.inflate(0,-32)
+        self.hitbox = self.rect.inflate(0,-12)
         self.shoot = shoot
         self.trigger_death = trigger_death
 
