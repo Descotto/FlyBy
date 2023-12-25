@@ -29,6 +29,7 @@ class Level:
         self.visuals = YSortCameraGroup(self.area,self.shield_sprites)
         self.obstacle_sprites = pygame.sprite.Group()
         self.projectile_sprites = pygame.sprite.Group()
+        self.missile_sprites = pygame.sprite.Group()
         self.enemy_bullets = pygame.sprite.Group()
         self.stun_bullets = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
@@ -62,6 +63,7 @@ class Level:
                                 self.shoot,
                                 self.secondary_shot,
                                 self.call_support,
+                                self.call_backup,
                                 self.shield)
                             player_one.support = True
                             exhaust = Particles((x,y),[self.visuals],'Exhaust1')
@@ -73,6 +75,7 @@ class Level:
                                 self.shoot,
                                 self.secondary_shot,
                                 self.call_support,
+                                self.call_backup,
                                 self.shield)
                         if style == 'threshold':
                             threshold = Tile((x,y), [self.threshold_sprites])
@@ -115,11 +118,13 @@ class Level:
         for bullet in self.stun_bullets.sprites():
             if bullet.hitbox.colliderect(player.hitbox):
                 player.take_damage(bullet.damage)
+
+        
         
     def projectile_collision(self):
         for bullet in self.projectile_sprites.sprites():
             for obstacle in self.obstacle_sprites.sprites():
-                if obstacle.hitbox.colliderect(bullet.hitbox):
+                if obstacle.rect.colliderect(bullet.hitbox):
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
                     bullet.kill()
 
@@ -127,7 +132,20 @@ class Level:
                 if entity.hitbox.colliderect(bullet.hitbox):
                     entity.take_damage(bullet.damage)
                     particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
-                    bullet.kill()            
+                    bullet.kill()     
+
+        for missile in self.missile_sprites.sprites():
+            for entity in self.entities.sprites():
+                if entity.hitbox.colliderect(missile.hitbox):
+                    entity.take_damage(missile.damage)
+                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    missile.kill()   
+
+            for obstacle in self.obstacle_sprites.sprites():
+                if obstacle.rect.colliderect(missile.hitbox):
+                    #particle = Particles((bullet.rect.x,bullet.rect.y),[self.visuals],bullet.type)
+                    missile.on_ground = True
+                    missile.rect.bottom = obstacle.rect.top
 
     def enemy_projectile_collision(self,player):
         for bullet in self.enemy_bullets.sprites():
@@ -167,17 +185,26 @@ class Level:
         player = self.player.sprite
         current_time = pygame.time.get_ticks()
         if current_time - player.last_s_time > player.s_cooldown * 1000:
-            bullet = D_Bullet(self.player.sprite.rect,[self.visuals,self.projectile_sprites])
+            bullet = D_Bullet(self.player.sprite.rect,[self.visuals,self.missile_sprites])
             player.last_s_time = current_time
 
     def call_support(self):
         player = self.player.sprite
         
-        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.support],self.shoot,self.secondary_shot,self.call_support,self.shield)
+        support1 = Support((player.rect.x - 70,player.rect.y + 80),[self.visuals,self.support],self.shoot,self.secondary_shot,self.call_support,self.call_backup,self.shield)
         exhaust = Particles((support1.rect.x,support1.rect.y),[self.visuals],'Exhaust1',support1.on_death)
-        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.support],self.shoot,self.secondary_shot,self.call_support,self.shield)
+        support2 = Support((player.rect.x - 70,player.rect.y - 80),[self.visuals,self.support],self.shoot,self.secondary_shot,self.call_support,self.call_backup,self.shield)
         exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
+
+    def call_backup(self):
+        player = self.player.sprite
         
+        backup1 = Backup((player.rect.x - 10,player.rect.y + 42),[self.visuals],self.shoot,self.secondary_shot,self.call_support,self.call_backup,self.shield)
+        #exhaust = Particles((support1.rect.x,support1.rect.y),[self.visuals],'Exhaust1',support1.on_death)
+        backup2 = Backup((player.rect.x - 10,player.rect.y - 15),[self.visuals],self.shoot,self.secondary_shot,self.call_support,self.call_backup,self.shield)
+        #exhaust2 = Particles((support2.rect.x,support2.rect.y),[self.visuals],'Exhaust1',support2.on_death)
+
+
     def shield(self):
         player = self.player.sprite
         shield = Particles((player.rect.centerx,player.rect.centery),[self.shield_sprites,self.visuals], 'bubble')
@@ -209,11 +236,16 @@ class Level:
                                  '6': {'name': 'salvage'},
                                  '7': {'name': 'salvage'},
                                  '8': {'name': 'salvage'},
-                                 '9': {'name': 'salvage'},}
+                                 '9': {'name': 'salvage'},
+                                 '10': {'name': 'salvage'},
+                                 '11': {'name': 'salvage'},
+                                 '12': {'name': 'salvage'},
+                                 '13': {'name': 'salvage'},
+                                 '14': {'name': 'power_up'},
+                                 '15': {'name': 'back_up'}}
+            
             if random_number < 10 and random_number > 3:
-                
-
-                pick = randint(1,9)
+                pick = randint(1,15)
                 
                 reward = Power_Up((entity.rect.x,entity.rect.y),[self.visuals,self.rewards],reward_option[str(pick)]['name'])
             entity.kill()

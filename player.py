@@ -4,7 +4,7 @@ from settings import *
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos,group,shoot,s_shot,call_support,shield):
+    def __init__(self,pos,group,shoot,s_shot,call_support,call_backup,shield):
         super().__init__(group)
         # setup
         self.import_character_assets()
@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.s_shoot = s_shot
         self.shield = shield
         self.call_support = call_support
+        self.call_backup = call_backup
         self.support_available = True
         self.support_active = False
         self.shield_ready = False
@@ -54,7 +55,7 @@ class Player(pygame.sprite.Sprite):
         # cooldowns
         self.bullet_cooldown = self.main_weapon['fire_rate']
         self.last_shoot_time = 0
-        self.s_cooldown = 0.5
+        self.s_cooldown = 0.9
         self.last_s_time = 0
         self.vulnerable_cooldown = 0.2
         self.last_vulnerable = 0
@@ -125,6 +126,7 @@ class Player(pygame.sprite.Sprite):
                 if self.support_available:
                     self.support_available = False
                     self.call_support()
+                    self.call_backup()
                     self.support_active = True
 
         # Check screen boundaries
@@ -236,8 +238,8 @@ class Player(pygame.sprite.Sprite):
 
 
 class Support(Player):
-    def __init__(self,pos,group,shoot,s_shot,call_support,shield):
-        super().__init__(pos,group,shoot,s_shot,call_support,shield)
+    def __init__(self,pos,group,shoot,s_shot,call_support,call_backup,shield):
+        super().__init__(pos,group,shoot,s_shot,call_support,call_backup,shield)
         self.hp = 2
         self.support_available = False
         self.shoot = shoot
@@ -282,10 +284,64 @@ class Support(Player):
         self.rect.x += player.speed * player.direction.x
         self.rect.y += player.speed * player.direction.y
 
+class Backup(Player):
+    def __init__(self,pos,group,shoot,s_shot,call_support,call_backup,shield):
+        super().__init__(pos,group,shoot,s_shot,call_support,call_backup,shield)
+        self.hp = 20
+        self.support_available = False
+        self.shoot = shoot
+        self.status = 'idle'
+        self.image = pygame.image.load('./Assets/back_up/1.png')
+        self.decay_cooldown = 0.5
+        self.last_decay = 0
+
+
+    def input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_SPACE]:
+            self.shoot(self)
+
+    def animate(self):
+        animation = self.animations[self.status]
+
+        # loop over frame index
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index -= 1
+            if self.status == 'dead':
+                self.frame_index = 0
+                self.kill()
+
+        image = animation[int(self.frame_index)]
+      
+        self.image = image
+        self.rect = self.image.get_rect(topleft = self.rect.topleft)
+        # set the rect
+        
+    def on_death(self,particle):
+        if self.hp <= 0:
+            particle.kill()
+
+    def decay(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_decay > self.decay_cooldown * 1000:
+            self.hp -= 0.5
+            self.last_decay = current_time
+
+    def update(self,player):
+        self.hitbox.center = self.rect.center
+        self.input()
+        self.get_status()
+        self.update_ammo()
+        self.decay()
+        self.direction = player.direction
+        self.rect.x += player.speed * player.direction.x
+        self.rect.y += player.speed * player.direction.y
+
 
 class Driver(Player):
-    def __init__(self,pos,group,shoot,s_shot,call_support,shield):
-        super().__init__(pos,group,shoot,s_shot,call_support,shield)
+    def __init__(self,pos,group,shoot,s_shot,call_support,call_backup,shield):
+        super().__init__(pos,group,shoot,s_shot,call_support,call_backup,shield)
         self.direction = pygame.math.Vector2(1,0)
 
 

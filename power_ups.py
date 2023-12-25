@@ -15,7 +15,7 @@ class Power_Up(pygame.sprite.Sprite):
 
     def import_character_assets(self):
         character_path = 'Assets/power_ups/'
-        self.animations = {'power_up':[], 'hp_up':[], 'salvage':[]}
+        self.animations = {'power_up':[],'hp_up':[],'salvage':[],'back_up':[]}
 
         for animation in self.animations.keys():
             full_path = character_path + animation
@@ -45,8 +45,10 @@ class Power_Up(pygame.sprite.Sprite):
             player.hp = 10
             self.kill()
         elif self.type == 'salvage':
-            player.salvage += 3
+            player.salvage += 10
             self.kill()
+        elif self.type == 'back_up':
+            player.call_backup()
 
     def update(self,player):
         self.animate()

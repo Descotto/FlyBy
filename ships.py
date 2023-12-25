@@ -12,6 +12,8 @@ class Ship1(Enemy):
         self.speed = 7
         self.hp = 1
         self.weapon = self.inv['stun']
+        self.bullet_type = self.weapon['type']
+        self.bullet_cooldown = self.weapon['fire_rate']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -58,6 +60,8 @@ class Ship2(Enemy):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-64,-96)
         self.weapon = self.inv['matter']
+        self.bullet_type = self.weapon['type']
+        self.bullet_cooldown = self.weapon['fire_rate']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -104,6 +108,8 @@ class Ship3(Enemy):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-64,-96)
         self.weapon = self.inv['flux']
+        self.bullet_type = self.weapon['type']
+        self.bullet_cooldown = self.weapon['fire_rate']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -150,6 +156,8 @@ class Ship4(Enemy):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
         self.weapon = self.inv['speed']
+        self.bullet_type = self.weapon['type']
+        self.bullet_cooldown = self.weapon['fire_rate']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -196,6 +204,8 @@ class Boss(Enemy):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
         self.weapon = self.inv['mass']
+        self.bullet_type = self.weapon['type']
+        self.bullet_cooldown = self.weapon['fire_rate']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -242,6 +252,8 @@ class Boss_Arm(Enemy):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-32,-96)
         self.weapon = self.inv['mass']
+        self.bullet_type = self.weapon['type']
+        self.bullet_cooldown = self.weapon['fire_rate']
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)

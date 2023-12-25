@@ -103,7 +103,7 @@ WEAPONS = {
     'stun': {'key':1,'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.9, 'capacity': 5, 'pic': './Assets/particles/Shot2/shot2_exp3.png'},
     'flux': {'key':2,'damage': 3, 'speed': 18, 'type': 'Shot3', 'fire_rate': 1.3, 'capacity': 3, 'pic': './Assets/particles/Shot3/shot3_exp2.png'},
     'matter': {'key':3,'damage': 2, 'speed': 10, 'type': 'Shot4', 'fire_rate': 1.2, 'capacity': 4, 'pic': './Assets/particles/Shot4/shot4_exp3.png'},
-    'mass': {'key':4,'damage': 5, 'speed': 13, 'type': 'Shot5', 'fire_rate': 0.8, 'capacity': 2, 'pic': './Assets/particles/Shot5/shot5_exp5.png'},
+    'mass': {'key':4,'damage': 5, 'speed': 13, 'type': 'Shot5', 'fire_rate': 1.5, 'capacity': 2, 'pic': './Assets/particles/Shot5/shot5_exp5.png'},
     'speed': {'key':5,'damage': 1, 'speed': 30, 'type': 'Shot6', 'fire_rate': 0.4, 'capacity': 7, 'pic': './Assets/particles/Shot6/shot6_exp1.png'},
     'gravity': {'key':6,'damage': 1, 'speed': 15, 'type': 'Shot7', 'fire_rate': 0.7, 'capacity': 3, 'pic': './Assets/particles/Shot7/07.png'}
 }

@@ -73,30 +73,25 @@ class D_Bullet(pygame.sprite.Sprite):
         self.import_bullet_assets()
         self.frame_index = 0
         self.animation_speed = 0.15
-        self.damage = 1
+        self.damage = 3
         self.speed = 16
         self.gravity = 0.5
-        self.type = 'Shot7'
+        self.on_ground = False
+        self.type = 'missile'
+        self.status = 'fall'
         
 
         # Set the dimensions and color of the bullet
         self.width = 5
         self.height = 5
-        self.image = self.animations[self.type][self.frame_index]
-        self.direction = pygame.math.Vector2(2,1)
-        self.rect = self.image.get_rect(midleft=(player_rect.x +57, player_rect.y + 32))
-        if self.type == 'Shot1':
-            self.hitbox = self.rect.inflate(-25,-25)
-        elif self.type in ['Shot5','Shot6']:
-            self.hitbox = self.rect.inflate(-120,-120)
-        elif self.type == 'Shot7':
-            self.hitbox = self.rect.inflate(-16,-16)
-        else:
-            self.hitbox = self.rect.inflate(-52,-52)
+        self.image = self.animations[self.status][self.frame_index]
+        self.direction = pygame.math.Vector2(0.5,0)
+        self.rect = self.image.get_rect(midleft=(player_rect.x + 20, player_rect.y + 50))
+        self.hitbox = self.rect.inflate(-10,-10)
 
     def import_bullet_assets(self):
-        bullet_path = 'Assets/bullets/'
-        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[]}
+        bullet_path = 'Assets/bullets/missile/'
+        self.animations = {'fall':[], 'run':[], 'ignite':[],}
 
         for animation in self.animations.keys():
             full_path = bullet_path + animation
@@ -104,7 +99,7 @@ class D_Bullet(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
 
     def animate(self):
-        animation = self.animations[self.type]
+        animation = self.animations[self.status]
         # loop over frame index
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
@@ -117,12 +112,23 @@ class D_Bullet(pygame.sprite.Sprite):
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
 
+    def  get_status(self):
+        if self.on_ground:
+            self.status = 'run'
+            self.gravity = 0
+            self.direction = pygame.math.Vector2(1,0)
+            self.speed += 0.3
+        else:
+            self.status = 'fall'
+
+
     def update(self,player):
         # Move the bullet in an angle
         self.rect.x += self.speed * self.direction.x
         self.hitbox.center = self.rect.center
         self.add_gravity()
-        self.add_gravity()
+        self.get_status()
+
         self.animate()
 
 class Enemy_Shot(pygame.sprite.Sprite):

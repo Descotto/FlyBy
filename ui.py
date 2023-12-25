@@ -9,9 +9,9 @@ class UI:
 
         # bar setup
         self.hp_bar_rect = pygame.Rect(10,10,HEALTH_BAR_WIDTH,BAR_HEIGHT)
-        self.ammo_rect = pygame.Rect(10,30,HEALTH_BAR_WIDTH,BAR_HEIGHT)
-        self.support_bar_rect = pygame.Rect(10, 50, HEALTH_BAR_WIDTH, BAR_HEIGHT)
-        self.shield_bar_rect = pygame.Rect(10, 70, ENERGY_BAR_WIDTH, BAR_HEIGHT)
+        self.ammo_rect = pygame.Rect(10,40,HEALTH_BAR_WIDTH,BAR_HEIGHT)
+        self.support_bar_rect = pygame.Rect(10, 70, HEALTH_BAR_WIDTH, BAR_HEIGHT)
+        self.shield_bar_rect = pygame.Rect(10, 100, ENERGY_BAR_WIDTH, BAR_HEIGHT)
 
         # convert weapon dictionary
         self.weapon_graphics = []
@@ -40,7 +40,7 @@ class UI:
         return bg_rect
     
     def weapon_overlay(self,weapon_index):
-        bg_rect = self.selection_box(10,603)
+        bg_rect = self.selection_box(10,550)
         weapon_surf = self.weapon_graphics[weapon_index]
         weapon_rect = weapon_surf.get_rect(center = bg_rect.center)
         
