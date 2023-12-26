@@ -32,10 +32,7 @@ MAP_LAYOUTS = {
         'enemy2': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy2.csv'),
         'enemy3': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy3.csv'),
         'enemy4': import_csv_layout('./Assets/map_files/map_3/flyby_3_enemy4.csv'),
-        'driver': import_csv_layout('./Assets/map_files/map_3/flyby_3_driver.csv'),
-        'boss_threshold': import_csv_layout('./Assets/map_files/map_3/flyby_3_boss_threshold.csv'),
-        'boss': import_csv_layout('./Assets/map_files/map_3/flyby_3_boss.csv'),
-        'arm': import_csv_layout('./Assets/map_files/map_3/flyby_3_boxx_arms.csv')},
+        'driver': import_csv_layout('./Assets/map_files/map_3/flyby_3_driver.csv')},
     'map_4': {
         'player': import_csv_layout('./Assets/map_files/map_4/flyby_4_player.csv'),
         'boss': import_csv_layout('./Assets/map_files/map_4/flyby_4_boss.csv'),

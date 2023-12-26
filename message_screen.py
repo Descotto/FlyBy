@@ -83,15 +83,73 @@ class StartScreen:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.image = pygame.image.load('./Assets/backgrounds/start_screen.png').convert_alpha()
+        self.image = pygame.image.load('./Assets/backgrounds/start.jpg').convert_alpha()
         self.image_rect = self.image.get_rect(center=(self.width // 2, self.height // 2))
-       
+
+        # Define vertical offset for text positions
+        text_offset = 256
+
+        # Define rectangles for the text with the offset
+        self.game_start_rect = pygame.Rect(self.width // 2 - 100, self.height // 2 - 50 + text_offset, 200, 30)
+        self.index_rect = pygame.Rect(self.width // 2 - 50, self.height // 2 + 20 + text_offset, 100, 30)
+
+        # Define fonts and render text surfaces
+        font = pygame.font.SysFont("Arial", 24)
+        self.game_start_text = font.render("Game Start", True, (255, 255, 255))
+        self.index_text = font.render("Index", True, (255, 255, 255))
+
+        # Define images for the selected state
+        self.game_start_image = pygame.image.load('./Assets/power_ups/back_up/3.png').convert_alpha()
+        self.index_image = pygame.image.load('./Assets/power_ups/back_up/3.png').convert_alpha()
+
+        # Selection state
+        self.selected_option = "Game Start"
+
+        # cooldown
+        self.click_timer = 0
+        self.click_cooldown = 1000
+
+    def handle_input(self,level,typing_screen):
+        keys = pygame.key.get_pressed()
+        current_time = pygame.time.get_ticks()
+
+
+        # Change the selected option based on user input
+        if keys[pygame.K_UP]:
+            self.selected_option = "Game Start"
+        elif keys[pygame.K_DOWN]:
+            self.selected_option = "Index"
+
+        # Trigger actions when a button is pressed
+        if keys[pygame.K_RETURN]:
+            if self.selected_option == "Game Start":
+                if current_time - self.click_timer >= self.click_cooldown:
+                    if not level.started and level.start_text:
+                        level.started = True
+                        level.start_text = False
+                        typing_screen.stop_music()
+                        level.play_music()
+                    if not level.start_text and not level.started:
+                        level.start_text = True
+                    self.click_timer = current_time
+            elif self.selected_option == "Index":
+                print("Index action")
+                # Add your action for "Index" here
 
     def run(self, screen):
         screen.fill((0, 0, 0))  # Background color (black in this case)
         screen.blit(self.image, self.image_rect)
+       
 
+        # Blit the text for both options
+        screen.blit(self.game_start_text, self.game_start_rect.topleft)
+        screen.blit(self.index_text, self.index_rect.topleft)
 
+        # Blit the image only for the selected option
+        if self.selected_option == "Game Start":
+            screen.blit(self.game_start_image, (self.game_start_rect.left - 52, self.game_start_rect.top))
+        elif self.selected_option == "Index":
+            screen.blit(self.index_image, (self.index_rect.left - 52, self.index_rect.top))
 
 class PauseScreen:
     def __init__(self, screen_width, screen_height, overlay_alpha=3):
