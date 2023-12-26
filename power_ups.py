@@ -49,6 +49,7 @@ class Power_Up(pygame.sprite.Sprite):
             self.kill()
         elif self.type == 'back_up':
             player.call_backup()
+            self.kill()
 
     def update(self,player):
         self.animate()
