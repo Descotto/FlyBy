@@ -58,17 +58,6 @@ while True:
         
         start_screen.handle_input(level,typing_screen)
         
-        # if keys[pygame.K_f]:
-        #     if not level.start_text and not level.started:
-        #         level.start_text = True
-
-        # if keys[pygame.K_RETURN]:
-        #     if not level.started and level.start_text:
-        #         level.started = True
-        #         level.start_text = False
-        #         typing_screen.stop_music()
-        #         # del typing_screen
-        #         level.play_music()
 
     if keys[pygame.K_c] and paused and current_time - pause_timer >= pause_cooldown:
         show_fullscreen_image = not show_fullscreen_image  # Toggle the flag

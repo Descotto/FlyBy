@@ -109,10 +109,16 @@ class StartScreen:
         self.click_timer = 0
         self.click_cooldown = 1000
 
-    def handle_input(self,level,typing_screen):
+        # Load the index image
+        self.index_image = pygame.image.load('./Assets/backgrounds/index.jpeg').convert_alpha()
+        self.index_image = pygame.transform.scale(self.index_image, (width, height))
+
+        # New attribute to track if the index image is currently displayed
+        self.index_image_displayed = False
+
+    def handle_input(self, level, typing_screen):
         keys = pygame.key.get_pressed()
         current_time = pygame.time.get_ticks()
-
 
         # Change the selected option based on user input
         if keys[pygame.K_UP]:
@@ -133,13 +139,18 @@ class StartScreen:
                         level.start_text = True
                     self.click_timer = current_time
             elif self.selected_option == "Index":
-                print("Index action")
-                # Add your action for "Index" here
+                if current_time - self.click_timer >= self.click_cooldown:
+                    if not self.index_image_displayed:
+                        # Display the full-screen image for "Index"
+                        self.index_image_displayed = True
+                    else:
+                        # If the image is already displayed, go back to the start screen
+                        self.index_image_displayed = False
+                    self.click_timer = current_time
 
     def run(self, screen):
         screen.fill((0, 0, 0))  # Background color (black in this case)
         screen.blit(self.image, self.image_rect)
-       
 
         # Blit the text for both options
         screen.blit(self.game_start_text, self.game_start_rect.topleft)
@@ -149,7 +160,12 @@ class StartScreen:
         if self.selected_option == "Game Start":
             screen.blit(self.game_start_image, (self.game_start_rect.left - 52, self.game_start_rect.top))
         elif self.selected_option == "Index":
-            screen.blit(self.index_image, (self.index_rect.left - 52, self.index_rect.top))
+            if self.index_image_displayed:
+                # Display the full-screen image for "Index"
+                screen.blit(self.index_image, (0, 0))
+            else:
+                screen.blit(self.index_text, self.index_rect.topleft)
+                screen.blit(self.game_start_image, (self.index_rect.left - 52, self.index_rect.top))
 
 class PauseScreen:
     def __init__(self, screen_width, screen_height, overlay_alpha=3):
