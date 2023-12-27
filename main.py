@@ -10,10 +10,24 @@ pygame.init()
 pygame.display.set_caption('Project FlyBy')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 1
+area = 2
+player_stats = {'salvage': 40, 'lives': 5}
+respawn = False
+def record_player(level,player):
+    global player_stats
+    if player.salvage < player_stats['salvage']:
+        player.salvage = player_stats['salvage']
+    elif player.lives > player_stats['lives']:
+        player.lives = player_stats['lives']
+    else:
+        player_stats = {'salvage': player.salvage, 'lives': player.lives}
+
+    global respawn
+    respawn = level.respawn
+
 start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
-level = Level(screen, area)
+level = Level(screen, area, player_stats, record_player)
 game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT, 60, (255, 255, 255))
 pause_screen = PauseScreen(SCREEN_WIDTH, SCREEN_HEIGHT)  
 
@@ -21,6 +35,7 @@ paused = False
 show_fullscreen_image = False
 pause_timer = 0
 pause_cooldown = 1000 
+
 
 
 
@@ -43,18 +58,21 @@ while True:
         else:
             if not level.over:
                 level.run()
+                level.check_gameover()
             elif level.over:
                 game_over.run(screen)
 
         if level.next_lv:
             area += 1
-            level = Level(screen, area)
+            level = Level(screen, area, record_player)
             level.next_lv = False
             level.started = True
 
         if keys[pygame.K_a]:
+            print(player_stats)
             if level.over:
-                level = Level(screen, area)
+                level = Level(screen, area, player_stats, record_player)
+                level.started = True
         
         start_screen.handle_input(level,typing_screen)
         

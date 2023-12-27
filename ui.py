@@ -32,6 +32,20 @@ class UI:
         self.display_surface.blit(text_surf,text_rect)
         pygame.draw.rect(self.display_surface,UI_BORDER_COLOR,text_rect.inflate(20,20),3)
 
+    def show_lives(self, num_lives):
+        # Define the size and spacing for the life images
+        life_size = 30
+        spacing = 5
+
+        # Get the position for the top right corner of the health bar
+        top_right = (self.hp_bar_rect.right + 200, self.hp_bar_rect.top)
+
+        # Iterate through the number of lives and display an image for each
+        for i in range(num_lives):
+            life_rect = pygame.Rect(top_right[0] - (life_size + spacing) * (i + 1), top_right[1], life_size, life_size)
+            life_image = pygame.image.load('./Assets/player/lives/life.png').convert_alpha()  # Replace 'path_to_life_image.png' with the actual path
+            life_image = pygame.transform.scale(life_image, (life_size, life_size))
+            self.display_surface.blit(life_image, life_rect)
 
     def selection_box(self,left,top):
         bg_rect = pygame.Rect(left,top,ITEM_BOX_SIZE,ITEM_BOX_SIZE)
@@ -135,3 +149,4 @@ class UI:
         self.show_shield_bar(player.shield_active, player.shield_ready, player.shield_charging, player.shield_hp, 10, self.shield_bar_rect)
         self.weapon_overlay(player.main_weapon['key'])
         self.show_salvage(player.salvage)
+        self.show_lives(player.lives)

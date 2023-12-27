@@ -12,12 +12,15 @@ from particles import Particles
 from ui import UI
 
 class Level:
-    def __init__(self,surface,area):
+    def __init__(self,surface,area,rec_stats,record_player):
         self.area = area
         self.next_lv = False
+        self.rec_stats = rec_stats
+        self.record_player = record_player
         self.display_surface = surface
         self.level_setup()
         self.over = False
+        self.respawn = False
         self.started = False
         self.start_text = False
         self.ui = UI()
@@ -66,6 +69,8 @@ class Level:
                                 self.call_backup,
                                 self.shield)
                             player_one.support = True
+                            player_one.salvage = self.rec_stats['salvage']
+                            player_one.lives = self.rec_stats['lives']
                             exhaust = Particles((x,y),[self.visuals],'Exhaust1')
                             # DRIVER
                         if style == 'driver':
@@ -167,9 +172,13 @@ class Level:
 
     def check_gameover(self):
         player = self.player.sprite
-        if player.hp < -10:
-            self.over = True
-
+        if player.hp < -5:
+            if player.lives > 0:
+                player.lives -= 1
+                self.respawn = True
+                self.record_player(self,player)
+                self.over = True
+                
     # PLAYER ACTIONS
     def shoot(self,player):
         if not player.critical_charge:
@@ -296,11 +305,11 @@ class Level:
     def run(self):
         player = self.player.sprite
         driver = self.driver.sprite
+        
         self.visuals.custom_draw(driver)
         self.visuals.update(player)
         self.driver.update()
         self.collisions(player)
-        self.check_gameover()
         self.projectile_collision()
         self.handle_reward()
         self.ui.display(player)

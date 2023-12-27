@@ -39,6 +39,7 @@ class Player(pygame.sprite.Sprite):
 
         # stats
         self.hp = 10
+        self.lives = 5
         self.weapons_owned = ['gravity','toxic']
         self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
