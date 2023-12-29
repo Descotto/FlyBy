@@ -177,7 +177,9 @@ class Level:
                 player.lives -= 1
                 self.respawn = True
                 self.record_player(self,player)
+            elif player.lives < 1:
                 self.over = True
+
                 
     # PLAYER ACTIONS
     def shoot(self,player):

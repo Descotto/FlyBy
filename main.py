@@ -27,6 +27,7 @@ def record_player(level,player):
 
 start_screen = StartScreen(SCREEN_WIDTH, SCREEN_HEIGHT)
 typing_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, START_TEXT)
+respawn_screen = TypingTextScreen(SCREEN_WIDTH, SCREEN_HEIGHT, RESPAWN_TEXT)
 level = Level(screen, area, player_stats, record_player)
 game_over = GameOver(SCREEN_WIDTH, SCREEN_HEIGHT, 60, (255, 255, 255))
 pause_screen = PauseScreen(SCREEN_WIDTH, SCREEN_HEIGHT)  
@@ -56,11 +57,13 @@ while True:
         elif not level.started:
             start_screen.run(screen)
         else:
-            if not level.over:
+            if not level.over and not respawn:
                 level.run()
                 level.check_gameover()
             elif level.over:
                 game_over.run(screen)
+            elif level.respawn:
+                respawn_screen.run(screen, delta_time)
 
         if level.next_lv:
             area += 1
@@ -71,8 +74,17 @@ while True:
         if keys[pygame.K_a]:
             print(player_stats)
             if level.over:
+                area = 1
+                player_stats = {'salvage': 40, 'lives': 5}
+                level = Level(screen, area, player_stats, record_player)
+                level.started = False
+
+        if keys[pygame.K_f]:
+            print(player_stats)
+            if respawn:
                 level = Level(screen, area, player_stats, record_player)
                 level.started = True
+                respawn = False
         
         start_screen.handle_input(level,typing_screen)
         

@@ -96,6 +96,9 @@ START_TEXT = ("Arrows = Movement.\n"
               "Press Z to salvage and adquire new weapons.\n"
               "Press P for Pause.\n"
               "Press ENTER to start.")
+RESPAWN_TEXT = ("[F]....\n"
+                "[L]!\n"
+                "Press F to continue")
 # lower fire_rate int = faster shots.
 WEAPONS = {
     'toxic': {'key':0,'damage': 0.1, 'speed': 20, 'type': 'Shot1', 'fire_rate': 0.6, 'capacity': 7, 'pic': './Assets/particles/Shot1/shot1_exp2.png'},
