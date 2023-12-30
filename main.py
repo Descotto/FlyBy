@@ -10,17 +10,26 @@ pygame.init()
 pygame.display.set_caption('Project FlyBy')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
-area = 2
-player_stats = {'salvage': 40, 'lives': 5}
+area = 1
+player_stats = {'salvage': 90, 'lives': 5}
 respawn = False
 def record_player(level,player):
     global player_stats
-    if player.salvage < player_stats['salvage']:
-        player.salvage = player_stats['salvage']
-    elif player.lives > player_stats['lives']:
-        player.lives = player_stats['lives']
+    if player.salv_trigger:
+        player.salv_trigger = False
+        if player.salvage < player_stats['salvage']:
+            player_stats['salvage'] = player.salvage
+        elif player.lives > player_stats['lives']:
+            player.lives = player_stats['lives']
+        else:
+            player_stats = {'salvage': player.salvage, 'lives': player.lives}
     else:
-        player_stats = {'salvage': player.salvage, 'lives': player.lives}
+        if player.salvage < player_stats['salvage']:
+            player.salvage = player_stats['salvage']
+        elif player.lives > player_stats['lives']:
+            player.lives = player_stats['lives']
+        else:
+            player_stats = {'salvage': player.salvage, 'lives': player.lives}
 
     global respawn
     respawn = level.respawn
@@ -67,7 +76,7 @@ while True:
 
         if level.next_lv:
             area += 1
-            level = Level(screen, area, record_player)
+            level = Level(screen, area, player_stats, record_player)
             level.next_lv = False
             level.started = True
 

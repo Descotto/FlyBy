@@ -1,4 +1,5 @@
-import pygame
+import pygame, sys
+from pygame.locals import *
 from support import *
 from settings import *
 
@@ -36,11 +37,19 @@ class Player(pygame.sprite.Sprite):
         self.direction = pygame.math.Vector2(0,0)
         self.speed = 3
         self.status = 'idle'
+        pygame.joystick.init()
+        # Check for connected joysticks
+        joystick_count = pygame.joystick.get_count()
+        self.joystick = None
+
+        if joystick_count > 0:
+            self.joystick = pygame.joystick.Joystick(0)
+            self.joystick.init()
 
         # stats
         self.hp = 10
         self.lives = 5
-        self.weapons_owned = ['gravity','toxic']
+        self.weapons_owned = ['gravity']
         self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
         self.secondary_weapon = WEAPONS['gravity']
@@ -48,8 +57,9 @@ class Player(pygame.sprite.Sprite):
         self.bullet_type = self.main_weapon['type']
 
         # progress
-        self.level = 0
+        self.level = len(self.weapons_owned)
         self.salvage = 0
+        self.salv_trigger = False
         self.wepaon_vault = ['gravity','toxic','speed','matter','mass','flux']
         
 
@@ -91,10 +101,19 @@ class Player(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect(topleft = self.rect.topleft)
         # set the rect
-        
+
+    def test_input(self):
+        if self.joystick:
+            # Handle joystick input
+            for event in pygame.event.get():
+                if event.type == JOYAXISMOTION:
+                    axis = event.axis
+                    value = event.value
+                    if axis == 1:  # Assuming axis 1 controls vertical movement
+                        self.direction.y = -value * 2  # Adjust the scale as needed
+                        break
+
     def input(self):
-        pygame.joystick.init()
-        # Get the number of available joysticks
         
         keys = pygame.key.get_pressed()
         
@@ -145,10 +164,11 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_o]:
             current_time = pygame.time.get_ticks()
             if current_time - self.switch_timer >= 1500:
-                if self.track_equipped + 1 < len(self.weapons_owned):
+                if self.track_equipped < len(self.weapons_owned):
                     self.track_equipped += 1
                     self.switch_weapon()
-                else:
+                    self.switch_timer = current_time
+                elif self.track_equipped  >= len(self.weapons_owned):
                     self.track_equipped = 0
                     self.switch_weapon()  # Call a method to handle weapon switching
                 self.switch_timer = current_time
@@ -158,8 +178,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_z]:
             if self.salvage >= 100:
                 self.handle_salvage()
-
-                                     
+                                   
     def get_status(self):
         if self.hp <= 1:
             self.status = 'dead'
@@ -218,13 +237,15 @@ class Player(pygame.sprite.Sprite):
             self.critical_charge = False
 
     def switch_weapon(self):
+        if self.track_equipped >= len(self.weapons_owned):
+            self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
 
     def handle_salvage(self):
-        if self.salvage >= 100:
+        if self.salvage >= 100 and not self.salv_trigger:
             self.salvage = 0
-            self.level += 1
-            self.weapons_owned.extend(self.wepaon_vault[self.level:])
+            self.salv_trigger = True
+            self.weapons_owned.append(self.wepaon_vault[self.level])
 
     def update(self,player):
         self.hitbox.center = self.rect.center
