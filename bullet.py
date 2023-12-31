@@ -36,7 +36,7 @@ class Bullet(pygame.sprite.Sprite):
        
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/'
-        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[], 'Shot7': []}
+        self.animations = {'Shot1':[], 'Shot2':[], 'Shot3':[], 'Shot4':[], 'Shot5':[], 'Shot6':[], 'Shot7': [], 'boss_shot': []}
 
         for animation in self.animations.keys():
             full_path = bullet_path + animation
@@ -72,7 +72,7 @@ class D_Bullet(pygame.sprite.Sprite):
         super().__init__(group)
         self.import_bullet_assets()
         self.frame_index = 0
-        self.animation_speed = 0.15
+        self.animation_speed = 0.10
         self.damage = 3
         self.speed = 16
         self.gravity = 0.5
@@ -87,7 +87,7 @@ class D_Bullet(pygame.sprite.Sprite):
         self.image = self.animations[self.status][self.frame_index]
         self.direction = pygame.math.Vector2(0.5,0)
         self.rect = self.image.get_rect(midleft=(player_rect.x + 20, player_rect.y + 50))
-        self.hitbox = self.rect.inflate(-10,-10)
+        self.hitbox = self.rect.inflate(-7,-7)
 
     def import_bullet_assets(self):
         bullet_path = 'Assets/bullets/missile/'

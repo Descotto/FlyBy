@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.level = len(self.weapons_owned)
         self.salvage = 0
         self.salv_trigger = False
-        self.wepaon_vault = ['gravity','toxic','speed','matter','mass','flux']
+        self.wepaon_vault = ['gravity','boss_shot','toxic','speed','matter','mass','flux']
         
 
         # cooldowns
@@ -157,26 +157,20 @@ class Player(pygame.sprite.Sprite):
                     
 
         if keys[pygame.K_a]:
+            self.salvage += 100
             if self.shield_ready:
                 self.shield_ready = False
                 self.shield()
                 self.shield_active = True
         if keys[pygame.K_o]:
             current_time = pygame.time.get_ticks()
-            if current_time - self.switch_timer >= 1500:
-                if self.track_equipped < len(self.weapons_owned):
-                    self.track_equipped += 1
-                    self.switch_weapon()
-                    self.switch_timer = current_time
-                elif self.track_equipped  >= len(self.weapons_owned):
-                    self.track_equipped = 0
-                    self.switch_weapon()  # Call a method to handle weapon switching
+            if current_time - self.switch_timer >= 1000:
+                self.switch_weapon()
                 self.switch_timer = current_time
-            else:
-                self.switch_timer = current_time
+                
 
         if keys[pygame.K_z]:
-            if self.salvage >= 100:
+            if len(self.weapons_owned) != len(self.wepaon_vault):
                 self.handle_salvage()
                                    
     def get_status(self):
@@ -237,6 +231,7 @@ class Player(pygame.sprite.Sprite):
             self.critical_charge = False
 
     def switch_weapon(self):
+        self.track_equipped += 1
         if self.track_equipped >= len(self.weapons_owned):
             self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
@@ -246,6 +241,8 @@ class Player(pygame.sprite.Sprite):
             self.salvage = 0
             self.salv_trigger = True
             self.weapons_owned.append(self.wepaon_vault[self.level])
+            self.level = len(self.weapons_owned)
+            self.salv_trigger = False
 
     def update(self,player):
         self.hitbox.center = self.rect.center
