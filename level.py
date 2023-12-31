@@ -71,6 +71,7 @@ class Level:
                             player_one.support = True
                             player_one.salvage = self.rec_stats['salvage']
                             player_one.lives = self.rec_stats['lives']
+                            player_one.weapons_owned = self.rec_stats['weapons']
                             exhaust = Particles((x,y),[self.visuals],'Exhaust1')
                             # DRIVER
                         if style == 'driver':
@@ -141,7 +142,6 @@ class Level:
             for entity in self.entities.sprites():
                 if entity.hitbox.colliderect(missile.hitbox):
                     entity.take_damage(missile.damage)
-                    print('hit')
                     particle = Particles((missile.rect.x,missile.rect.y),[self.visuals],missile.type)
                     missile.kill()   
 

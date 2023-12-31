@@ -11,7 +11,7 @@ pygame.display.set_caption('Project FlyBy')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 area = 1
-player_stats = {'salvage': 90, 'lives': 5}
+player_stats = {'salvage': 90, 'lives': 5, 'weapons': ['gravity']}
 respawn = False
 def record_player(level,player):
     global player_stats
@@ -21,8 +21,10 @@ def record_player(level,player):
             player_stats['salvage'] = player.salvage
         elif player.lives > player_stats['lives']:
             player.lives = player_stats['lives']
+        elif len(player.weapons_owned) > len(player_stats['weapons']):
+            player_stats['weapons'] = player.weapons_owned
         else:
-            player_stats = {'salvage': player.salvage, 'lives': player.lives}
+            player_stats = {'salvage': player.salvage, 'lives': player.lives, 'weapons': player.weapons_owned}
     else:
         if player.salvage < player_stats['salvage']:
             player.salvage = player_stats['salvage']
@@ -81,7 +83,6 @@ while True:
             level.started = True
 
         if keys[pygame.K_a]:
-            print(player_stats)
             if level.over:
                 area = 1
                 player_stats = {'salvage': 40, 'lives': 5}
@@ -89,7 +90,6 @@ while True:
                 level.started = False
 
         if keys[pygame.K_f]:
-            print(player_stats)
             if respawn:
                 level = Level(screen, area, player_stats, record_player)
                 level.started = True
