@@ -235,12 +235,17 @@ class Boss(Enemy):
         
         return (distance,direction)
     
+    def boss_reward(self,player):
+        if self.hp <= 2:
+            player.wepaon_vault.append('boss_shot')
+        self.trigger_death(self)
+
     def update(self,player):
         self.rect.x += self.speed * self.direction.x
         self.rect.y += self.speed * self.direction.y
         self.hitbox.center = self.rect.center
         self.get_player_distance_direction(player)
-        self.trigger_death(self)
+        self.boss_reward(player)
 
 
 # =================================================================================================
@@ -255,7 +260,7 @@ class Boss_Arm(Enemy):
         self.boss = boss
         self.moving = True
         self.speed = self.boss.speed
-        self.hp = 7
+        self.hp = 4
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(10,-5)
         self.weapon = self.inv['mass']

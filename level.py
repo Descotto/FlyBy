@@ -316,8 +316,8 @@ class Level:
         self.handle_reward()
         self.ui.display(player)
         self.handle_area()
-        self.enemy_projectile_collision(player)
-        self.shield_collision()
+        #self.enemy_projectile_collision(player)
+        #self.shield_collision()
         self.handle_threshold()
         
 

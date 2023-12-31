@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.level = len(self.weapons_owned)
         self.salvage = 0
         self.salv_trigger = False
-        self.wepaon_vault = ['gravity','boss_shot','toxic','speed','matter','mass','flux']
+        self.wepaon_vault = ['gravity','toxic','speed','matter','mass','flux']
         
 
         # cooldowns
@@ -234,13 +234,13 @@ class Player(pygame.sprite.Sprite):
         if self.track_equipped >= len(self.weapons_owned):
             self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
-        if self.capacity > self.main_weapon['capacity']:
-            self.capacity = self.main_weapon['capacity']
+        self.capacity = self.main_weapon['capacity']
 
     def handle_salvage(self):
         if self.salvage >= 100 and not self.salv_trigger:
             self.salvage = 0
             self.salv_trigger = True
+            self.level = len(self.weapons_owned)
             self.weapons_owned.append(self.wepaon_vault[self.level])
             self.level = len(self.weapons_owned)
             self.salv_trigger = False
