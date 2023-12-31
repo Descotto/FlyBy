@@ -5,6 +5,7 @@ class Ship1(Enemy):
     def __init__(self,pos,group,shoot,trigger_death):
         super().__init__(pos,group,shoot,trigger_death)
         self.image = pygame.image.load('./Assets/enemies/0/Ship1.png').convert_alpha()
+        self.left_img = self.image
         self.flip = pygame.transform.flip(self.image, True,False)
         self.image = self.flip
         self.name = 'Kazi-Vir'
@@ -14,6 +15,9 @@ class Ship1(Enemy):
         self.weapon = self.inv['stun']
         self.bullet_type = self.weapon['type']
         self.bullet_cooldown = self.weapon['fire_rate']
+
+
+        
 
     def get_player_distance_direction(self,player):
         enemy_vec = pygame.math.Vector2(self.rect.center)
@@ -26,9 +30,14 @@ class Ship1(Enemy):
             direction = (player_vec - enemy_vec).normalize()
             if player.rect.x < self.rect.x:
                 self.shoot(self,direction)
+                self.image = self.flip
+            else:
+                self.image = self.left_img
         elif distance < 900 and self.moving:
             direction = (player_vec - enemy_vec).normalize()
             self.direction = pygame.math.Vector2(direction)
+            if self.direction.x > 0:
+                self.direction.x = 3.5
             
         else:
             
@@ -42,6 +51,7 @@ class Ship1(Enemy):
         self.rect.y += self.speed * self.direction.y
         self.hitbox.center = self.rect.center
         self.get_player_distance_direction(player)
+        #self.adjust_dir()
         self.trigger_death(self)
 
 

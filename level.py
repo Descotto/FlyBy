@@ -13,10 +13,10 @@ from ui import UI
 
 class Level:
     def __init__(self,surface,area,rec_stats,record_player):
-        self.area = area
-        self.next_lv = False
         self.rec_stats = rec_stats
         self.record_player = record_player
+        self.area = area
+        self.next_lv = False
         self.display_surface = surface
         self.level_setup()
         self.over = False
@@ -283,8 +283,10 @@ class Level:
 
     def handle_area(self):
         player = self.player.sprite
+        driver = self.driver.sprite
         for sprite in self.leve_up_sprites.sprites():
-            if sprite.rect.colliderect(player.hitbox):
+            if sprite.rect.colliderect(driver.rect):
+                self.record_player(self,player)
                 self.next_lv = True
 
     def handle_threshold(self):

@@ -57,7 +57,7 @@ class GameOver:
     def __init__(self, width, height, font_size=36, color=(255, 255, 255)):
         self.width = width
         self.height = height
-        self.lines = ["Game Over", "Press 'A' to restart"]
+        self.lines = ["Game Over", "Press 'A' to try again"]
         self.font_size = font_size
         self.color = color
         self.font = pygame.font.Font(None, self.font_size)

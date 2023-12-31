@@ -84,7 +84,7 @@ while True:
         if keys[pygame.K_a]:
             if level.over:
                 area = 1
-                player_stats = {'salvage': 40, 'lives': 5}
+                player_stats = {'salvage': 0, 'lives': 5, 'weapons': ['gravity']}
                 level = Level(screen, area, player_stats, record_player)
                 level.started = False
 
