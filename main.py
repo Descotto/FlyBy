@@ -6,6 +6,7 @@ from message_screen import *
 
 
 pygame.init()
+pygame.mixer.init()
 pygame.display.set_caption('Project FlyBy')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
