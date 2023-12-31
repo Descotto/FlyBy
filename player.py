@@ -234,6 +234,8 @@ class Player(pygame.sprite.Sprite):
         if self.track_equipped >= len(self.weapons_owned):
             self.track_equipped = 0
         self.main_weapon = WEAPONS[self.weapons_owned[self.track_equipped]]
+        if self.capacity > self.main_weapon['capacity']:
+            self.capacity = self.main_weapon['capacity']
 
     def handle_salvage(self):
         if self.salvage >= 100 and not self.salv_trigger:

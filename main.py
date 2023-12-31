@@ -10,7 +10,7 @@ pygame.display.set_caption('Project FlyBy')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 area = 1
-player_stats = {'salvage': 90, 'lives': 5, 'weapons': ['gravity']}
+player_stats = {'salvage': 0, 'lives': 5, 'weapons': ['gravity']}
 respawn = False
 def record_player(level,player):
     global player_stats
