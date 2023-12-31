@@ -1,6 +1,5 @@
 
-import pygame
-import sys
+import pygame, sys
 from settings import *
 from level import Level
 from message_screen import *

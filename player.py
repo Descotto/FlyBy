@@ -157,14 +157,13 @@ class Player(pygame.sprite.Sprite):
                     
 
         if keys[pygame.K_a]:
-            self.salvage += 100
             if self.shield_ready:
                 self.shield_ready = False
                 self.shield()
                 self.shield_active = True
         if keys[pygame.K_o]:
             current_time = pygame.time.get_ticks()
-            if current_time - self.switch_timer >= 1000:
+            if current_time - self.switch_timer >= 800:
                 self.switch_weapon()
                 self.switch_timer = current_time
                 
