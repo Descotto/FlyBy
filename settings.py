@@ -92,7 +92,7 @@ START_TEXT = ("Arrows = Movement.\n"
               "Press X for Missiles.\n"
               "Press S to call your support crew\n"
               "Press A to deploy your shields\n"
-              "Press 1 to circle through weapons.\n"
+              "Press O to circle through weapons.\n"
               "Press Z to salvage and adquire new weapons.\n"
               "Press P for Pause.\n"
               "Press ENTER to start.")
@@ -101,12 +101,12 @@ RESPAWN_TEXT = ("[F]....\n"
                 "Press F to continue")
 # lower fire_rate int = faster shots.
 WEAPONS = {
-    'toxic': {'key':0,'damage': 3, 'speed': 20, 'type': 'Shot1', 'fire_rate': 0.6, 'capacity': 17, 'pic': './Assets/particles/Shot1/shot1_exp2.png'},
-    'stun': {'key':1,'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.9, 'capacity': 15, 'pic': './Assets/particles/Shot2/shot2_exp3.png'},
+    'toxic': {'key':0,'damage': 3, 'speed': 20, 'type': 'Shot1', 'fire_rate': 1.6, 'capacity': 17, 'pic': './Assets/particles/Shot1/shot1_exp2.png'},
+    'stun': {'key':1,'damage': 0.5, 'speed': 20, 'type': 'Shot2', 'fire_rate': 0.6, 'capacity': 15, 'pic': './Assets/particles/Shot2/shot2_exp3.png'},
     'flux': {'key':2,'damage': 3, 'speed': 18, 'type': 'Shot3', 'fire_rate': 1.3, 'capacity': 13, 'pic': './Assets/particles/Shot3/shot3_exp2.png'},
-    'matter': {'key':3,'damage': 2, 'speed': 10, 'type': 'Shot4', 'fire_rate': 1.2, 'capacity': 14, 'pic': './Assets/particles/Shot4/shot4_exp3.png'},
+    'matter': {'key':3,'damage': 2, 'speed': 23, 'type': 'Shot4', 'fire_rate': 1.2, 'capacity': 14, 'pic': './Assets/particles/Shot4/shot4_exp3.png'},
     'mass': {'key':4,'damage': 5, 'speed': 13, 'type': 'Shot5', 'fire_rate': 1.5, 'capacity': 12, 'pic': './Assets/particles/Shot5/shot5_exp5.png'},
-    'speed': {'key':5,'damage': 2, 'speed': 30, 'type': 'Shot6', 'fire_rate': 0.4, 'capacity': 22, 'pic': './Assets/particles/Shot6/shot6_exp1.png'},
+    'speed': {'key':5,'damage': 2, 'speed': 30, 'type': 'Shot6', 'fire_rate': 0.6, 'capacity': 22, 'pic': './Assets/particles/Shot6/shot6_exp1.png'},
     'gravity': {'key':6,'damage': 1, 'speed': 15, 'type': 'Shot7', 'fire_rate': 0.7, 'capacity': 13, 'pic': './Assets/particles/Shot7/07.png'},
     'boss_shot': {'key': 7, 'damage': 5, 'speed': 15, 'type': 'boss_shot', 'fire_rate': 5, 'capacity': 5, 'pic': './Assets/bullets/boss_shot/boss_shot1.png'}
 }
