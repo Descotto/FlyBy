@@ -14,6 +14,7 @@ from ui import UI
 class Level:
     def __init__(self,surface,area,rec_stats,record_player):
         self.rec_stats = rec_stats
+        print(self.rec_stats)
         self.record_player = record_player
         self.area = area
         self.next_lv = False
@@ -52,7 +53,7 @@ class Level:
 
                     x = col_index * TILE_SIZE
                     y = row_index * TILE_SIZE
-
+                    
                     if cell != '-1':
                         if style == 'floor':
                             tile = Tile((x,y), [self.obstacle_sprites])
@@ -286,7 +287,7 @@ class Level:
         driver = self.driver.sprite
         for sprite in self.leve_up_sprites.sprites():
             if sprite.rect.colliderect(driver.rect):
-                self.record_player(self,player)
+                # self.record_player(self,player)
                 self.next_lv = True
 
     def handle_threshold(self):
@@ -318,8 +319,8 @@ class Level:
         self.handle_reward()
         self.ui.display(player)
         self.handle_area()
-        #self.enemy_projectile_collision(player)
-        #self.shield_collision()
+        self.enemy_projectile_collision(player)
+        self.shield_collision()
         self.handle_threshold()
         
 

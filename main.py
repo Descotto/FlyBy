@@ -6,7 +6,6 @@ from message_screen import *
 
 
 pygame.init()
-pygame.mixer.init()
 pygame.display.set_caption('Project FlyBy')
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
@@ -16,22 +15,24 @@ respawn = False
 def record_player(level,player):
     global player_stats
     if player.salv_trigger:
-        player.salv_trigger = False
         if player.salvage < player_stats['salvage']:
             player_stats['salvage'] = player.salvage
+            player_stats['weapons'] = player.weapons_owned
         elif player.lives > player_stats['lives']:
             player.lives = player_stats['lives']
-        elif len(player.weapons_owned) > len(player_stats['weapons']):
             player_stats['weapons'] = player.weapons_owned
         else:
             player_stats = {'salvage': player.salvage, 'lives': player.lives, 'weapons': player.weapons_owned}
+        player.salv_trigger = False
     else:
         if player.salvage < player_stats['salvage']:
             player.salvage = player_stats['salvage']
+            player.weapons_owned = player_stats['weapons']
         elif player.lives > player_stats['lives']:
             player.lives = player_stats['lives']
+            player.weapons_owned = player_stats['weapons']
         else:
-            player_stats = {'salvage': player.salvage, 'lives': player.lives}
+            player_stats = {'salvage': player.salvage, 'lives': player.lives, 'weapons': player.weapons_owned}
 
     global respawn
     respawn = level.respawn
